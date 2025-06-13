@@ -5,11 +5,11 @@ import {
   RowListGridData,
   SearchHeaderComponentState
 } from '@onecx/portal-integration-angular'
-import { AiKnowledgeBaseSearchCriteria } from './ai-knowledge-base-search.parameters'
+import { AIKnowledgeBaseSearchCriteria } from './ai-knowledge-base-search.parameters'
 
-export interface AiKnowledgeBaseSearchViewModel {
+export interface AIKnowledgeBaseSearchViewModel {
   columns: DataTableColumn[]
-  searchCriteria: AiKnowledgeBaseSearchCriteria
+  searchCriteria: AIKnowledgeBaseSearchCriteria
   results: RowListGridData[]
   resultComponentState: InteractiveDataViewComponentState | null
   searchHeaderComponentState: SearchHeaderComponentState | null

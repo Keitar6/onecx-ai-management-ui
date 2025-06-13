@@ -1,5 +1,5 @@
 import { createActionGroup, props } from '@ngrx/store'
-import { AIKnowledgeVectorDb } from '../../../shared/generated'
+import { AIContext, AIKnowledgeVectorDb } from '../../../shared/generated'
 
 export const AIKnowledgeVectorDbDetailsActions = createActionGroup({
   source: 'AIKnowledgeVectorDbDetails',
@@ -10,6 +10,10 @@ export const AIKnowledgeVectorDbDetailsActions = createActionGroup({
     'ai knowledge vector db details received': props<{
       details: AIKnowledgeVectorDb
     }>(),
-    'ai knowledge vector db details loading failed': props<{ error: string | null }>()
+    'ai knowledge vector db details loading failed': props<{ error: string | null }>(),
+    'ai knowledge vector db contexts received': props<{
+      contexts: AIContext[]
+    }>(),
+    'ai knowledge vector db contexts loading failed': props<{ error: string | null }>()
   }
 })

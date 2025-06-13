@@ -1,14 +1,14 @@
 import { createSelector } from '@ngrx/store'
 import { createChildSelectors } from '@onecx/ngrx-accelerator'
 import { RowListGridData } from '@onecx/portal-integration-angular'
-import { aiKnowledgeBaseFeature } from '../../ai-knowledge-base.reducers'
+import { AIKnowledgeBaseFeature } from '../../ai-knowledge-base.reducers'
 import { initialState } from './ai-knowledge-base-search.reducers'
-import { AiKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.viewmodel'
+import { AIKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.viewmodel'
 
-export const aiKnowledgeBaseSearchSelectors = createChildSelectors(aiKnowledgeBaseFeature.selectSearch, initialState)
+export const AIKnowledgeBaseSearchSelectors = createChildSelectors(AIKnowledgeBaseFeature.selectSearch, initialState)
 
 export const selectResults = createSelector(
-  aiKnowledgeBaseSearchSelectors.selectResults,
+  AIKnowledgeBaseSearchSelectors.selectResults,
   (results): RowListGridData[] => {
     return results.map((item) => ({
       imagePath: '',
@@ -19,16 +19,16 @@ export const selectResults = createSelector(
   }
 )
 
-export const selectAiKnowledgeBaseSearchViewModel = createSelector(
-  aiKnowledgeBaseSearchSelectors.selectColumns,
-  aiKnowledgeBaseSearchSelectors.selectCriteria,
+export const selectAIKnowledgeBaseSearchViewModel = createSelector(
+  AIKnowledgeBaseSearchSelectors.selectColumns,
+  AIKnowledgeBaseSearchSelectors.selectCriteria,
   selectResults,
-  aiKnowledgeBaseSearchSelectors.selectResultComponentState,
-  aiKnowledgeBaseSearchSelectors.selectSearchHeaderComponentState,
-  aiKnowledgeBaseSearchSelectors.selectDiagramComponentState,
-  aiKnowledgeBaseSearchSelectors.selectChartVisible,
-  aiKnowledgeBaseSearchSelectors.selectSearchLoadingIndicator,
-  aiKnowledgeBaseSearchSelectors.selectSearchExecuted,
+  AIKnowledgeBaseSearchSelectors.selectResultComponentState,
+  AIKnowledgeBaseSearchSelectors.selectSearchHeaderComponentState,
+  AIKnowledgeBaseSearchSelectors.selectDiagramComponentState,
+  AIKnowledgeBaseSearchSelectors.selectChartVisible,
+  AIKnowledgeBaseSearchSelectors.selectSearchLoadingIndicator,
+  AIKnowledgeBaseSearchSelectors.selectSearchExecuted,
   (
     columns,
     searchCriteria,
@@ -39,7 +39,7 @@ export const selectAiKnowledgeBaseSearchViewModel = createSelector(
     chartVisible,
     searchLoadingIndicator,
     searchExecuted
-  ): AiKnowledgeBaseSearchViewModel => ({
+  ): AIKnowledgeBaseSearchViewModel => ({
     columns,
     searchCriteria,
     results,

@@ -12,15 +12,15 @@ import { TranslateService } from '@ngx-translate/core'
 import { BreadcrumbService, ColumnType, PortalCoreModule, UserService } from '@onecx/portal-integration-angular'
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { DialogService } from 'primeng/dynamicdialog'
-import { AiKnowledgeBaseSearchActions } from './ai-knowledge-base-search.actions'
-import { aiKnowledgeBaseSearchColumns } from './ai-knowledge-base-search.columns'
-import { AiKnowledgeBaseSearchComponent } from './ai-knowledge-base-search.component'
-import { AiKnowledgeBaseSearchHarness } from './ai-knowledge-base-search.harness'
+import { AIKnowledgeBaseSearchActions } from './ai-knowledge-base-search.actions'
+import { AIKnowledgeBaseSearchColumns } from './ai-knowledge-base-search.columns'
+import { AIKnowledgeBaseSearchComponent } from './ai-knowledge-base-search.component'
+import { AIKnowledgeBaseSearchHarness } from './ai-knowledge-base-search.harness'
 import { initialState } from './ai-knowledge-base-search.reducers'
-import { selectAiKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.selectors'
-import { AiKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.viewmodel'
+import { selectAIKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.selectors'
+import { AIKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.viewmodel'
 
-describe('AiKnowledgeBaseSearchComponent', () => {
+describe('AIKnowledgeBaseSearchComponent', () => {
   const origAddEventListener = window.addEventListener
   const origPostMessage = window.postMessage
 
@@ -50,19 +50,19 @@ describe('AiKnowledgeBaseSearchComponent', () => {
   })
 
   HTMLCanvasElement.prototype.getContext = jest.fn()
-  let component: AiKnowledgeBaseSearchComponent
-  let fixture: ComponentFixture<AiKnowledgeBaseSearchComponent>
+  let component: AIKnowledgeBaseSearchComponent
+  let fixture: ComponentFixture<AIKnowledgeBaseSearchComponent>
   let store: MockStore<Store>
   let formBuilder: FormBuilder
-  let aiKnowledgeBaseSearch: AiKnowledgeBaseSearchHarness
+  let AIKnowledgeBaseSearch: AIKnowledgeBaseSearchHarness
 
   const mockActivatedRoute = {
     snapshot: {
       data: {}
     }
   }
-  const baseAiKnowledgeBaseSearchViewModel: AiKnowledgeBaseSearchViewModel = {
-    columns: aiKnowledgeBaseSearchColumns,
+  const baseAIKnowledgeBaseSearchViewModel: AIKnowledgeBaseSearchViewModel = {
+    columns: AIKnowledgeBaseSearchColumns,
     searchCriteria: { id: '1', name: 'Name', description: 'lorem ipsum' },
     searchExecuted: true,
     results: [],
@@ -91,7 +91,7 @@ describe('AiKnowledgeBaseSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AiKnowledgeBaseSearchComponent],
+      declarations: [AIKnowledgeBaseSearchComponent],
       imports: [
         PortalCoreModule,
         LetDirective,
@@ -107,7 +107,7 @@ describe('AiKnowledgeBaseSearchComponent', () => {
       providers: [
         DialogService,
         provideMockStore({
-          initialState: { aiKnowledgeBase: { search: initialState } }
+          initialState: { AIKnowledgeBase: { search: initialState } }
         }),
         FormBuilder,
         { provide: ActivatedRoute, useValue: mockActivatedRoute }
@@ -123,13 +123,13 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     formBuilder = TestBed.inject(FormBuilder)
 
     store = TestBed.inject(MockStore)
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, baseAiKnowledgeBaseSearchViewModel)
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, baseAIKnowledgeBaseSearchViewModel)
     store.refreshState()
 
-    fixture = TestBed.createComponent(AiKnowledgeBaseSearchComponent)
+    fixture = TestBed.createComponent(AIKnowledgeBaseSearchComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
-    aiKnowledgeBaseSearch = await TestbedHarnessEnvironment.harnessForFixture(fixture, AiKnowledgeBaseSearchHarness)
+    AIKnowledgeBaseSearch = await TestbedHarnessEnvironment.harnessForFixture(fixture, AIKnowledgeBaseSearchHarness)
   })
 
   it('should create the component', () => {
@@ -138,8 +138,8 @@ describe('AiKnowledgeBaseSearchComponent', () => {
 
   it('should dispatch resetButtonClicked action on resetSearch', async () => {
     const doneFn = jest.fn()
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       results: [
         {
           id: '1',
@@ -157,17 +157,17 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     })
     store.refreshState()
 
-    store.scannedActions$.pipe(ofType(AiKnowledgeBaseSearchActions.resetButtonClicked)).subscribe(() => {
+    store.scannedActions$.pipe(ofType(AIKnowledgeBaseSearchActions.resetButtonClicked)).subscribe(() => {
       doneFn()
     })
 
-    const searchHeader = await aiKnowledgeBaseSearch.getHeader()
+    const searchHeader = await AIKnowledgeBaseSearch.getHeader()
     await searchHeader.clickResetButton()
     expect(doneFn).toHaveBeenCalledTimes(1)
   })
 
   it('should have 2 overFlow header actions when search config is disabled', async () => {
-    const searchHeader = await aiKnowledgeBaseSearch.getHeader()
+    const searchHeader = await AIKnowledgeBaseSearch.getHeader()
     const pageHeader = await searchHeader.getPageHeader()
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton()
     await overflowActionButton?.click()
@@ -183,13 +183,13 @@ describe('AiKnowledgeBaseSearchComponent', () => {
   })
 
   it('should display hide chart action if chart is visible', async () => {
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       chartVisible: true
     })
     store.refreshState()
 
-    const searchHeader = await aiKnowledgeBaseSearch.getHeader()
+    const searchHeader = await AIKnowledgeBaseSearch.getHeader()
     const pageHeader = await searchHeader.getPageHeader()
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton()
     await overflowActionButton?.click()
@@ -203,8 +203,8 @@ describe('AiKnowledgeBaseSearchComponent', () => {
 
   it('should display chosen column in the diagram', async () => {
     component.diagramColumnId = 'column_1'
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       chartVisible: true,
       results: [
         {
@@ -233,7 +233,7 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     })
     store.refreshState()
 
-    const diagram = await (await aiKnowledgeBaseSearch.getDiagram())!.getDiagram()
+    const diagram = await (await AIKnowledgeBaseSearch.getDiagram())!.getDiagram()
 
     expect(await diagram.getTotalNumberOfResults()).toBe(3)
     expect(await diagram.getSumLabel()).toEqual('Total')
@@ -247,7 +247,7 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     fixture.detectChanges()
 
     expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1)
-    const searchHeader = await aiKnowledgeBaseSearch.getHeader()
+    const searchHeader = await AIKnowledgeBaseSearch.getHeader()
     const pageHeader = await searchHeader.getPageHeader()
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Search')
 
@@ -258,9 +258,9 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     const formValue = formBuilder.group({
       changeMe: '123'
     })
-    component.aiKnowledgeBaseSearchFormGroup = formValue
+    component.AIKnowledgeBaseSearchFormGroup = formValue
 
-    store.scannedActions$.pipe(ofType(AiKnowledgeBaseSearchActions.searchButtonClicked)).subscribe((a) => {
+    store.scannedActions$.pipe(ofType(AIKnowledgeBaseSearchActions.searchButtonClicked)).subscribe((a) => {
       expect(a.searchCriteria).toEqual({ changeMe: '123' })
       done()
     })
@@ -276,7 +276,7 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     })
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      AiKnowledgeBaseSearchActions.searchHeaderComponentStateChanged({
+      AIKnowledgeBaseSearchActions.searchHeaderComponentStateChanged({
         activeViewMode: 'advanced'
       })
     )
@@ -285,15 +285,15 @@ describe('AiKnowledgeBaseSearchComponent', () => {
   it('should dispatch displayedColumnsChanged on data view column change', async () => {
     jest.spyOn(store, 'dispatch')
 
-    fixture = TestBed.createComponent(AiKnowledgeBaseSearchComponent)
+    fixture = TestBed.createComponent(AIKnowledgeBaseSearchComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
-    aiKnowledgeBaseSearch = await TestbedHarnessEnvironment.harnessForFixture(fixture, AiKnowledgeBaseSearchHarness)
+    AIKnowledgeBaseSearch = await TestbedHarnessEnvironment.harnessForFixture(fixture, AIKnowledgeBaseSearchHarness)
 
     jest.clearAllMocks()
 
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       columns: [
         {
           columnType: ColumnType.STRING,
@@ -309,7 +309,7 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     })
     store.refreshState()
 
-    const interactiveDataView = await aiKnowledgeBaseSearch.getSearchResults()
+    const interactiveDataView = await AIKnowledgeBaseSearch.getSearchResults()
     const columnGroupSelector = await interactiveDataView?.getCustomGroupColumnSelector()
     expect(columnGroupSelector).toBeTruthy()
     await columnGroupSelector!.openCustomGroupColumnSelectorDialog()
@@ -322,7 +322,7 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     await saveButton.click()
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      AiKnowledgeBaseSearchActions.displayedColumnsChanged({
+      AIKnowledgeBaseSearchActions.displayedColumnsChanged({
         displayedColumns: [
           {
             columnType: ColumnType.STRING,
@@ -342,27 +342,27 @@ describe('AiKnowledgeBaseSearchComponent', () => {
   it('should dispatch chartVisibilityToggled on show/hide chart header', async () => {
     jest.spyOn(store, 'dispatch')
 
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       chartVisible: false
     })
     store.refreshState()
 
-    const searchHeader = await aiKnowledgeBaseSearch.getHeader()
+    const searchHeader = await AIKnowledgeBaseSearch.getHeader()
     const pageHeader = await searchHeader.getPageHeader()
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton()
     await overflowActionButton?.click()
 
     const showChartActionItem = await pageHeader.getOverFlowMenuItem('Show chart')
     await showChartActionItem!.selectItem()
-    expect(store.dispatch).toHaveBeenCalledWith(AiKnowledgeBaseSearchActions.chartVisibilityToggled())
+    expect(store.dispatch).toHaveBeenCalledWith(AIKnowledgeBaseSearchActions.chartVisibilityToggled())
   })
 
   it('should display translated headers', async () => {
-    const searchHeader = await aiKnowledgeBaseSearch.getHeader()
+    const searchHeader = await AIKnowledgeBaseSearch.getHeader()
     const pageHeader = await searchHeader.getPageHeader()
-    expect(await pageHeader.getHeaderText()).toEqual('AiKnowledgeBase Search')
-    expect(await pageHeader.getSubheaderText()).toEqual('Searching and displaying of AiKnowledgeBase')
+    expect(await pageHeader.getHeaderText()).toEqual('AIKnowledgeBase Search')
+    expect(await pageHeader.getSubheaderText()).toEqual('Searching and displaying of AIKnowledgeBase')
   })
 
   it('should display translated empty message when no search results', async () => {
@@ -373,15 +373,15 @@ describe('AiKnowledgeBaseSearchComponent', () => {
         id: 'column_1'
       }
     ]
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       results: [],
       columns: columns,
       displayedColumns: columns
     })
     store.refreshState()
 
-    const interactiveDataView = await aiKnowledgeBaseSearch.getSearchResults()
+    const interactiveDataView = await AIKnowledgeBaseSearch.getSearchResults()
     const dataView = await interactiveDataView.getDataView()
     const dataTable = await dataView.getDataTable()
     const rows = await dataTable?.getRows()
@@ -395,8 +395,8 @@ describe('AiKnowledgeBaseSearchComponent', () => {
   it('should not display chart when no results or toggled to not visible', async () => {
     component.diagramColumnId = 'column_1'
 
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       results: [],
       chartVisible: true,
       columns: [
@@ -409,11 +409,11 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     })
     store.refreshState()
 
-    let diagram = await aiKnowledgeBaseSearch.getDiagram()
+    let diagram = await AIKnowledgeBaseSearch.getDiagram()
     expect(diagram).toBeNull()
 
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       results: [
         {
           id: '1',
@@ -432,11 +432,11 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     })
     store.refreshState()
 
-    diagram = await aiKnowledgeBaseSearch.getDiagram()
+    diagram = await AIKnowledgeBaseSearch.getDiagram()
     expect(diagram).toBeNull()
 
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       results: [
         {
           id: '1',
@@ -455,7 +455,7 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     })
     store.refreshState()
 
-    diagram = await aiKnowledgeBaseSearch.getDiagram()
+    diagram = await AIKnowledgeBaseSearch.getDiagram()
     expect(diagram).toBeTruthy()
   })
 
@@ -476,15 +476,15 @@ describe('AiKnowledgeBaseSearchComponent', () => {
         id: 'column_1'
       }
     ]
-    store.overrideSelector(selectAiKnowledgeBaseSearchViewModel, {
-      ...baseAiKnowledgeBaseSearchViewModel,
+    store.overrideSelector(selectAIKnowledgeBaseSearchViewModel, {
+      ...baseAIKnowledgeBaseSearchViewModel,
       results: results,
       columns: columns,
       displayedColumns: columns
     })
     store.refreshState()
 
-    const searchHeader = await aiKnowledgeBaseSearch.getHeader()
+    const searchHeader = await AIKnowledgeBaseSearch.getHeader()
     const pageHeader = await searchHeader.getPageHeader()
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton()
     await overflowActionButton?.click()
@@ -492,6 +492,6 @@ describe('AiKnowledgeBaseSearchComponent', () => {
     const exportAllActionItem = await pageHeader.getOverFlowMenuItem('Export all')
     await exportAllActionItem!.selectItem()
 
-    expect(store.dispatch).toHaveBeenCalledWith(AiKnowledgeBaseSearchActions.exportButtonClicked())
+    expect(store.dispatch).toHaveBeenCalledWith(AIKnowledgeBaseSearchActions.exportButtonClicked())
   })
 })

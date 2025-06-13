@@ -137,6 +137,7 @@ export class AIKnowledgeBaseBffService {
             localVarHttpContext = new HttpContext();
         }
 
+
         // to determine the Content-Type header
         const consumes: string[] = [
             'application/json'
@@ -158,7 +159,7 @@ export class AIKnowledgeBaseBffService {
         }
 
         let localVarPath = `/AIKnowledgeBase`;
-        return this.httpClient.request<CreateAIKnowledgeBaseResponse>('post', `http://localhost:4010${localVarPath}`,
+        return this.httpClient.request<CreateAIKnowledgeBaseResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: createAIKnowledgeBaseRequest,
@@ -216,7 +217,7 @@ export class AIKnowledgeBaseBffService {
         }
 
         let localVarPath = `/AIKnowledgeBase/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<any>('delete', `http://localhost:4010${localVarPath}`,
+        return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -273,7 +274,7 @@ export class AIKnowledgeBaseBffService {
         }
 
         let localVarPath = `/AIKnowledgeBase/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<GetAIKnowledgeBaseByIdResponse>('get', `http://localhost:4010${localVarPath}`,
+        return this.httpClient.request<GetAIKnowledgeBaseByIdResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -337,7 +338,7 @@ export class AIKnowledgeBaseBffService {
         }
 
         let localVarPath = `/AIKnowledgeBase/search`;
-        return this.httpClient.request<SearchAIKnowledgeBaseResponse>('post', `http://localhost:4010${localVarPath}`,
+        return this.httpClient.request<SearchAIKnowledgeBaseResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: searchAIKnowledgeBaseRequest,
@@ -409,7 +410,7 @@ export class AIKnowledgeBaseBffService {
         }
 
         let localVarPath = `/AIKnowledgeBase/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<UpdateAIKnowledgeBaseResponse>('put', `http://localhost:4010${localVarPath}`,
+        return this.httpClient.request<UpdateAIKnowledgeBaseResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: updateAIKnowledgeBaseRequest,

@@ -8,14 +8,19 @@
  * Do not edit the class manually.
  */
 
-import { AIContext } from "./aIContext";
 
-
-export interface AIKnowledgeBase { 
-    modificationCount?: number;
-    id: string;
+export interface SearchAIContextRequest { 
+    id?: number;
+    /**
+     * The number of the page
+     */
+    pageNumber?: number;
+    /**
+     * The size of the page.
+     */
+    pageSize?: number;
     name?: string;
     description?: string;
-    contexts?: AIContext[]
+    appId?: string;
 }
 

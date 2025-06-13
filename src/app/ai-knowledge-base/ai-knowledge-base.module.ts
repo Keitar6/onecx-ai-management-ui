@@ -13,17 +13,17 @@ import {
 } from '@onecx/portal-integration-angular'
 import { CalendarModule } from 'primeng/calendar'
 import { SharedModule } from '../shared/shared.module'
-import { aiKnowledgeBaseFeature } from './ai-knowledge-base.reducers'
+import { AIKnowledgeBaseFeature } from './ai-knowledge-base.reducers'
 import { routes } from './ai-knowledge-base.routes'
-import { AiKnowledgeBaseSearchComponent } from './pages/ai-knowledge-base-search/ai-knowledge-base-search.component'
-import { AiKnowledgeBaseSearchEffects } from './pages/ai-knowledge-base-search/ai-knowledge-base-search.effects'
-import { AiKnowledgeBaseDetailsComponent } from './pages/ai-knowledge-base-details/ai-knowledge-base-details.component'
-import { AiKnowledgeBaseDetailsEffects } from './pages/ai-knowledge-base-details/ai-knowledge-base-details.effects'
+import { AIKnowledgeBaseSearchComponent } from './pages/ai-knowledge-base-search/ai-knowledge-base-search.component'
+import { AIKnowledgeBaseSearchEffects } from './pages/ai-knowledge-base-search/ai-knowledge-base-search.effects'
+import { AIKnowledgeBaseDetailsComponent } from './pages/ai-knowledge-base-details/ai-knowledge-base-details.component'
+import { AIKnowledgeBaseDetailsEffects } from './pages/ai-knowledge-base-details/ai-knowledge-base-details.effects'
 import { AIKnowledgeBaseCreateUpdateComponent } from './pages/ai-knowledge-base-search/dialogs/aiknowledge-base-create-update/aiknowledge-base-create-update.component'
 
 @NgModule({
   providers: [providePortalDialogService()],
-  declarations: [AIKnowledgeBaseCreateUpdateComponent, AiKnowledgeBaseDetailsComponent, AiKnowledgeBaseSearchComponent],
+  declarations: [AIKnowledgeBaseCreateUpdateComponent, AIKnowledgeBaseDetailsComponent, AIKnowledgeBaseSearchComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -33,9 +33,9 @@ import { AIKnowledgeBaseCreateUpdateComponent } from './pages/ai-knowledge-base-
     FormsModule,
     ReactiveFormsModule,
     CalendarModule,
-    StoreModule.forFeature(aiKnowledgeBaseFeature),
-    EffectsModule.forFeature([AiKnowledgeBaseDetailsEffects, AiKnowledgeBaseSearchEffects]),
+    StoreModule.forFeature(AIKnowledgeBaseFeature),
+    EffectsModule.forFeature([AIKnowledgeBaseDetailsEffects, AIKnowledgeBaseSearchEffects]),
     TranslateModule
   ]
 })
-export class AiKnowledgeBaseModule {}
+export class AIKnowledgeBaseModule {}

@@ -16,20 +16,20 @@ import {
 } from '@onecx/portal-integration-angular'
 import { PrimeIcons } from 'primeng/api'
 import { map, Observable } from 'rxjs'
-import { AiKnowledgeBaseSearchActions } from './ai-knowledge-base-search.actions'
+import { AIKnowledgeBaseSearchActions } from './ai-knowledge-base-search.actions'
 import {
-  AiKnowledgeBaseSearchCriteria,
-  aiKnowledgeBaseSearchCriteriasSchema
+  AIKnowledgeBaseSearchCriteria,
+  AIKnowledgeBaseSearchCriteriasSchema
 } from './ai-knowledge-base-search.parameters'
-import { selectAiKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.selectors'
-import { AiKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.viewmodel'
+import { selectAIKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.selectors'
+import { AIKnowledgeBaseSearchViewModel } from './ai-knowledge-base-search.viewmodel'
 
 @Component({
   selector: 'app-ai-knowledge-base-search',
   templateUrl: './ai-knowledge-base-search.component.html',
   styleUrls: ['./ai-knowledge-base-search.component.scss']
 })
-export class AiKnowledgeBaseSearchComponent implements OnInit {
+export class AIKnowledgeBaseSearchComponent implements OnInit {
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
     private readonly store: Store,
@@ -46,10 +46,10 @@ export class AiKnowledgeBaseSearchComponent implements OnInit {
         routerLink: '/ai-knowledge-base'
       }
     ])
-    this.viewModel$.subscribe((vm) => this.aiKnowledgeBaseSearchFormGroup.patchValue(vm.searchCriteria))
+    this.viewModel$.subscribe((vm) => this.AIKnowledgeBaseSearchFormGroup.patchValue(vm.searchCriteria))
   }
 
-  viewModel$: Observable<AiKnowledgeBaseSearchViewModel> = this.store.select(selectAiKnowledgeBaseSearchViewModel)
+  viewModel$: Observable<AIKnowledgeBaseSearchViewModel> = this.store.select(selectAIKnowledgeBaseSearchViewModel)
 
   defaultDataSortDirection = DataSortDirection.NONE
   defaultDiagramType = DiagramType.PIE
@@ -63,7 +63,7 @@ export class AiKnowledgeBaseSearchComponent implements OnInit {
           icon: PrimeIcons.PLUS,
           titleKey: 'AI_KNOWLEDGE_BASE_SEARCH.HEADER_ACTIONS.CREATE_BASE',
           show: 'always',
-          actionCallback: () => this.createAiKnowledgeBase()
+          actionCallback: () => this.createAIKnowledgeBase()
         },
         {
           labelKey: 'AI_KNOWLEDGE_BASE_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
@@ -94,28 +94,28 @@ export class AiKnowledgeBaseSearchComponent implements OnInit {
     map((vm) => vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn)
   )
 
-  public aiKnowledgeBaseSearchFormGroup: FormGroup = this.formBuilder.group({
-    ...(Object.fromEntries(aiKnowledgeBaseSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
-      keyof AiKnowledgeBaseSearchCriteria,
+  public AIKnowledgeBaseSearchFormGroup: FormGroup = this.formBuilder.group({
+    ...(Object.fromEntries(AIKnowledgeBaseSearchCriteriasSchema.keyof().options.map((k) => [k, null])) as Record<
+      keyof AIKnowledgeBaseSearchCriteria,
       unknown
     >)
-  } satisfies Record<keyof AiKnowledgeBaseSearchCriteria, unknown>)
+  } satisfies Record<keyof AIKnowledgeBaseSearchCriteria, unknown>)
 
   resultComponentStateChanged(state: InteractiveDataViewComponentState) {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.resultComponentStateChanged(state))
+    this.store.dispatch(AIKnowledgeBaseSearchActions.resultComponentStateChanged(state))
   }
 
   searchHeaderComponentStateChanged(state: SearchHeaderComponentState) {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.searchHeaderComponentStateChanged(state))
+    this.store.dispatch(AIKnowledgeBaseSearchActions.searchHeaderComponentStateChanged(state))
   }
 
   diagramComponentStateChanged(state: DiagramComponentState) {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.diagramComponentStateChanged(state))
+    this.store.dispatch(AIKnowledgeBaseSearchActions.diagramComponentStateChanged(state))
   }
 
   search(formValue: FormGroup) {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
-      (acc: Partial<AiKnowledgeBaseSearchCriteria>, [key, value]) => ({
+      (acc: Partial<AIKnowledgeBaseSearchCriteria>, [key, value]) => ({
         ...acc,
         [key]: isValidDate(value)
           ? new Date(
@@ -133,38 +133,38 @@ export class AiKnowledgeBaseSearchComponent implements OnInit {
       {}
     )
 
-    this.store.dispatch(AiKnowledgeBaseSearchActions.searchButtonClicked({ searchCriteria }))
+    this.store.dispatch(AIKnowledgeBaseSearchActions.searchButtonClicked({ searchCriteria }))
   }
 
   details({ id }: RowListGridData) {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.detailsButtonClicked({ id }))
+    this.store.dispatch(AIKnowledgeBaseSearchActions.detailsButtonClicked({ id }))
   }
 
-  createAiKnowledgeBase() {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.createButtonClicked())
+  createAIKnowledgeBase() {
+    this.store.dispatch(AIKnowledgeBaseSearchActions.createButtonClicked())
   }
 
   edit({ id }: RowListGridData) {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.editButtonClicked({ id }))
+    this.store.dispatch(AIKnowledgeBaseSearchActions.editButtonClicked({ id }))
   }
 
   delete({ id }: RowListGridData) {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.deleteButtonClicked({ id }))
+    this.store.dispatch(AIKnowledgeBaseSearchActions.deleteButtonClicked({ id }))
   }
 
   resetSearch() {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.resetButtonClicked())
+    this.store.dispatch(AIKnowledgeBaseSearchActions.resetButtonClicked())
   }
 
   exportItems() {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.exportButtonClicked())
+    this.store.dispatch(AIKnowledgeBaseSearchActions.exportButtonClicked())
   }
 
   toggleChartVisibility() {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.chartVisibilityToggled())
+    this.store.dispatch(AIKnowledgeBaseSearchActions.chartVisibilityToggled())
   }
 
   onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
-    this.store.dispatch(AiKnowledgeBaseSearchActions.displayedColumnsChanged({ displayedColumns }))
+    this.store.dispatch(AIKnowledgeBaseSearchActions.displayedColumnsChanged({ displayedColumns }))
   }
 }

@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
   {
     matcher: startsWith('ai-knowledge-base'),
-    loadChildren: () => import('./ai-knowledge-base/ai-knowledge-base.module').then((mod) => mod.AiKnowledgeBaseModule)
+    loadChildren: () => import('./ai-knowledge-base/ai-knowledge-base.module').then((mod) => mod.AIKnowledgeBaseModule)
   }
 ]
 

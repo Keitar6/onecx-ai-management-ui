@@ -5,11 +5,11 @@ import {
   InteractiveDataViewComponentState,
   SearchHeaderComponentState
 } from '@onecx/portal-integration-angular'
-import { AiKnowledgeBase } from '../../../shared/generated'
-import { AiKnowledgeBaseSearchCriteria } from './ai-knowledge-base-search.parameters'
+import { AIKnowledgeBase } from '../../../shared/generated'
+import { AIKnowledgeBaseSearchCriteria } from './ai-knowledge-base-search.parameters'
 
-export const AiKnowledgeBaseSearchActions = createActionGroup({
-  source: 'AiKnowledgeBaseSearch',
+export const AIKnowledgeBaseSearchActions = createActionGroup({
+  source: 'AIKnowledgeBaseSearch',
   events: {
     'Details button clicked': props<{
       id: number | string
@@ -31,23 +31,23 @@ export const AiKnowledgeBaseSearchActions = createActionGroup({
     'Delete button clicked': props<{
       id: number | string
     }>(),
-    'Delete ai knowledge base cancelled': emptyProps(),
-    'Delete ai knowledge base succeeded': emptyProps(),
-    'Delete ai knowledge base failed': props<{
+    'Delete AIKnowledge base cancelled': emptyProps(),
+    'Delete AIKnowledge base succeeded': emptyProps(),
+    'Delete AIKnowledge base failed': props<{
       error: string | null
     }>(),
     'Search button clicked': props<{
-      searchCriteria: AiKnowledgeBaseSearchCriteria
+      searchCriteria: AIKnowledgeBaseSearchCriteria
     }>(),
     'Reset button clicked': emptyProps(),
-    'aiKnowledgeBase search results received': props<{
-      stream: AiKnowledgeBase[]
+    'AIKnowledgeBase search results received': props<{
+      stream: AIKnowledgeBase[]
       size: number
       number: number
       totalElements: number
       totalPages: number
     }>(),
-    'aiKnowledgeBase search results loading failed': props<{ error: string | null }>(),
+    'AIKnowledgeBase search results loading failed': props<{ error: string | null }>(),
     'Export button clicked': emptyProps(),
     'Result component state changed': props<InteractiveDataViewComponentState>(),
     'Search header component state changed': props<SearchHeaderComponentState>(),

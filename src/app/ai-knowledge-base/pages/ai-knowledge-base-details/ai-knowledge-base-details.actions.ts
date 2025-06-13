@@ -1,28 +1,28 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store'
-import { AiKnowledgeBase } from '../../../shared/generated'
+import { AIKnowledgeBase } from '../../../shared/generated'
 
-export const AiKnowledgeBaseDetailsActions = createActionGroup({
-  source: 'AiKnowledgeBaseDetails',
+export const AIKnowledgeBaseDetailsActions = createActionGroup({
+  source: 'AIKnowledgeBaseDetails',
   events: {
     'navigated to details page': props<{
       id: string | undefined
     }>(),
-    'ai knowledge base details received': props<{
-      details: AiKnowledgeBase
+    'AIKnowledge base details received': props<{
+      details: AIKnowledgeBase
     }>(),
-    'ai knowledge base reloaded details received': props<{
-      details: AiKnowledgeBase
+    'AIKnowledge base reloaded details received': props<{
+      details: AIKnowledgeBase
     }>(),
-    'ai knowledge base details loading failed': props<{ error: string | null }>(),
+    'AIKnowledge base details loading failed': props<{ error: string | null }>(),
     'edit mode set': props<{ editMode: boolean }>(),
-    'Update ai knowledge base cancelled': emptyProps(),
-    'Update ai knowledge base succeeded': emptyProps(),
-    'Update ai knowledge base failed': props<{
+    'Update AIKnowledge base cancelled': emptyProps(),
+    'Update AIKnowledge base succeeded': emptyProps(),
+    'Update AIKnowledge base failed': props<{
       error: string | null
     }>(),
-    'Delete ai knowledge base cancelled': emptyProps(),
-    'Delete ai knowledge base succeeded': emptyProps(),
-    'Delete ai knowledge base failed': props<{
+    'Delete AIKnowledge base cancelled': emptyProps(),
+    'Delete AIKnowledge base succeeded': emptyProps(),
+    'Delete AIKnowledge base failed': props<{
       error: string | null
     }>(),
     'cancel edit back clicked': emptyProps(),
@@ -30,7 +30,7 @@ export const AiKnowledgeBaseDetailsActions = createActionGroup({
     'cancel edit not dirty': emptyProps(),
     'edit button clicked': emptyProps(),
     'save button clicked': props<{
-      details: AiKnowledgeBase
+      details: AIKnowledgeBase
     }>(),
     'cancel button clicked': props<{
       dirty: boolean

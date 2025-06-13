@@ -9,16 +9,16 @@ import { DialogState, PortalDialogService, PortalMessageService } from '@onecx/p
 import { PrimeIcons } from 'primeng/api'
 import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs'
 import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors'
-import { AiKnowledgeBase, AiKnowledgeBaseBffService, UpdateAiKnowledgeBaseRequest } from '../../../shared/generated'
-import { AiKnowledgeBaseDetailsActions } from './ai-knowledge-base-details.actions'
-import { AiKnowledgeBaseDetailsComponent } from './ai-knowledge-base-details.component'
-import { aiKnowledgeBaseDetailsSelectors } from './ai-knowledge-base-details.selectors'
+import { AIKnowledgeBase, AIKnowledgeBaseBffService, UpdateAIKnowledgeBaseRequest } from '../../../shared/generated'
+import { AIKnowledgeBaseDetailsActions } from './ai-knowledge-base-details.actions'
+import { AIKnowledgeBaseDetailsComponent } from './ai-knowledge-base-details.component'
+import { AIKnowledgeBaseDetailsSelectors } from './ai-knowledge-base-details.selectors'
 
 @Injectable()
-export class AiKnowledgeBaseDetailsEffects {
+export class AIKnowledgeBaseDetailsEffects {
   constructor(
     private actions$: Actions,
-    private aiKnowledgeBaseService: AiKnowledgeBaseBffService,
+    private AIKnowledgeBaseService: AIKnowledgeBaseBffService,
     private router: Router,
     private store: Store,
     private messageService: PortalMessageService,
@@ -28,29 +28,29 @@ export class AiKnowledgeBaseDetailsEffects {
   navigatedToDetailsPage$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(routerNavigatedAction),
-      filterForNavigatedTo(this.router, AiKnowledgeBaseDetailsComponent),
+      filterForNavigatedTo(this.router, AIKnowledgeBaseDetailsComponent),
       concatLatestFrom(() => this.store.select(selectRouteParam('id'))),
       map(([, id]) => {
-        return AiKnowledgeBaseDetailsActions.navigatedToDetailsPage({
+        return AIKnowledgeBaseDetailsActions.navigatedToDetailsPage({
           id
         })
       })
     )
   })
 
-  loadAiKnowledgeBaseById$ = createEffect(() => {
+  loadAIKnowledgeBaseById$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AiKnowledgeBaseDetailsActions.navigatedToDetailsPage),
+      ofType(AIKnowledgeBaseDetailsActions.navigatedToDetailsPage),
       switchMap(({ id }) =>
-        this.aiKnowledgeBaseService.getAiKnowledgeBaseById(id ?? '').pipe(
+        this.AIKnowledgeBaseService.getAIKnowledgeBaseById(id ?? '').pipe(
           map(({ result }) =>
-            AiKnowledgeBaseDetailsActions.aiKnowledgeBaseDetailsReceived({
+            AIKnowledgeBaseDetailsActions.aIKnowledgeBaseDetailsReceived({
               details: result
             })
           ),
           catchError((error) =>
             of(
-              AiKnowledgeBaseDetailsActions.aiKnowledgeBaseDetailsLoadingFailed({
+              AIKnowledgeBaseDetailsActions.aIKnowledgeBaseDetailsLoadingFailed({
                 error
               })
             )
@@ -62,20 +62,20 @@ export class AiKnowledgeBaseDetailsEffects {
 
   cancelButtonNotDirty$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AiKnowledgeBaseDetailsActions.cancelButtonClicked),
+      ofType(AIKnowledgeBaseDetailsActions.cancelButtonClicked),
       filter((action) => !action.dirty),
       map(() => {
-        return AiKnowledgeBaseDetailsActions.cancelEditNotDirty()
+        return AIKnowledgeBaseDetailsActions.cancelEditNotDirty()
       })
     )
   })
 
   cancelButtonClickedDirty$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AiKnowledgeBaseDetailsActions.cancelButtonClicked),
+      ofType(AIKnowledgeBaseDetailsActions.cancelButtonClicked),
       filter((action) => action.dirty),
       switchMap(() => {
-        return this.portalDialogService.openDialog<AiKnowledgeBase | undefined>(
+        return this.portalDialogService.openDialog<AIKnowledgeBase | undefined>(
           'AI_KNOWLEDGE_BASE_DETAILS.CANCEL.HEADER',
           'AI_KNOWLEDGE_BASE_DETAILS.CANCEL.MESSAGE',
           'AI_KNOWLEDGE_BASE_DETAILS.CANCEL.CONFIRM'
@@ -83,17 +83,17 @@ export class AiKnowledgeBaseDetailsEffects {
       }),
       switchMap((dialogResult) => {
         if (!dialogResult || dialogResult.button == 'secondary') {
-          return of(AiKnowledgeBaseDetailsActions.cancelEditBackClicked())
+          return of(AIKnowledgeBaseDetailsActions.cancelEditBackClicked())
         }
-        return of(AiKnowledgeBaseDetailsActions.cancelEditConfirmClicked())
+        return of(AIKnowledgeBaseDetailsActions.cancelEditConfirmClicked())
       })
     )
   })
 
   saveButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AiKnowledgeBaseDetailsActions.saveButtonClicked),
-      concatLatestFrom(() => this.store.select(aiKnowledgeBaseDetailsSelectors.selectDetails)),
+      ofType(AIKnowledgeBaseDetailsActions.saveButtonClicked),
+      concatLatestFrom(() => this.store.select(AIKnowledgeBaseDetailsSelectors.selectDetails)),
       switchMap(([action, details]) => {
         const itemToEditId = details?.id
         const updatedItem = {
@@ -102,24 +102,24 @@ export class AiKnowledgeBaseDetailsEffects {
         }
 
         if (!itemToEditId) {
-          return of(AiKnowledgeBaseDetailsActions.updateAiKnowledgeBaseCancelled())
+          return of(AIKnowledgeBaseDetailsActions.updateAIKnowledgeBaseCancelled())
         }
         const itemToEdit = {
           dataObject: updatedItem
-        } as UpdateAiKnowledgeBaseRequest
-        return this.aiKnowledgeBaseService.updateAiKnowledgeBase(itemToEditId, itemToEdit).pipe(
+        } as UpdateAIKnowledgeBaseRequest
+        return this.AIKnowledgeBaseService.updateAIKnowledgeBase(itemToEditId, itemToEdit).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.UPDATE.SUCCESS'
             })
-            return AiKnowledgeBaseDetailsActions.updateAiKnowledgeBaseSucceeded()
+            return AIKnowledgeBaseDetailsActions.updateAIKnowledgeBaseSucceeded()
           }),
           catchError((error) => {
             this.messageService.error({
               summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.UPDATE.ERROR'
             })
             return of(
-              AiKnowledgeBaseDetailsActions.updateAiKnowledgeBaseFailed({
+              AIKnowledgeBaseDetailsActions.updateAIKnowledgeBaseFailed({
                 error
               })
             )
@@ -130,8 +130,8 @@ export class AiKnowledgeBaseDetailsEffects {
   })
   deleteButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AiKnowledgeBaseDetailsActions.deleteButtonClicked),
-      concatLatestFrom(() => this.store.select(aiKnowledgeBaseDetailsSelectors.selectDetails)),
+      ofType(AIKnowledgeBaseDetailsActions.deleteButtonClicked),
+      concatLatestFrom(() => this.store.select(AIKnowledgeBaseDetailsSelectors.selectDetails)),
       mergeMap(([, itemToDelete]) => {
         return this.portalDialogService
           .openDialog<unknown>(
@@ -147,32 +147,32 @@ export class AiKnowledgeBaseDetailsEffects {
             }
           )
           .pipe(
-            map((state): [DialogState<unknown>, AiKnowledgeBase | undefined] => {
+            map((state): [DialogState<unknown>, AIKnowledgeBase | undefined] => {
               return [state, itemToDelete]
             })
           )
       }),
       switchMap(([dialogResult, itemToDelete]) => {
         if (!dialogResult || dialogResult.button == 'secondary') {
-          return of(AiKnowledgeBaseDetailsActions.deleteAiKnowledgeBaseCancelled())
+          return of(AIKnowledgeBaseDetailsActions.deleteAIKnowledgeBaseCancelled())
         }
         if (!itemToDelete) {
           throw new Error('Item to delete not found!')
         }
 
-        return this.aiKnowledgeBaseService.deleteAiKnowledgeBase(itemToDelete.id).pipe(
+        return this.AIKnowledgeBaseService.deleteAIKnowledgeBase(itemToDelete.id).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.DELETE.SUCCESS'
             })
-            return AiKnowledgeBaseDetailsActions.deleteAiKnowledgeBaseSucceeded()
+            return AIKnowledgeBaseDetailsActions.deleteAIKnowledgeBaseSucceeded()
           }),
           catchError((error) => {
             this.messageService.error({
               summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.DELETE.ERROR'
             })
             return of(
-              AiKnowledgeBaseDetailsActions.deleteAiKnowledgeBaseFailed({
+              AIKnowledgeBaseDetailsActions.deleteAIKnowledgeBaseFailed({
                 error
               })
             )
@@ -182,10 +182,10 @@ export class AiKnowledgeBaseDetailsEffects {
     )
   })
 
-  deleteAiKnowledgeBaseSucceeded$ = createEffect(
+  deleteAIKnowledgeBaseSucceeded$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(AiKnowledgeBaseDetailsActions.deleteAiKnowledgeBaseSucceeded),
+        ofType(AIKnowledgeBaseDetailsActions.deleteAIKnowledgeBaseSucceeded),
         concatLatestFrom(() => this.store.select(selectUrl)),
         tap(([, currentUrl]) => {
           const urlTree = this.router.parseUrl(currentUrl)
@@ -202,7 +202,7 @@ export class AiKnowledgeBaseDetailsEffects {
 
   errorMessages: { action: Action; key: string }[] = [
     {
-      action: AiKnowledgeBaseDetailsActions.aiKnowledgeBaseDetailsLoadingFailed,
+      action: AIKnowledgeBaseDetailsActions.aIKnowledgeBaseDetailsLoadingFailed,
       key: 'AI_KNOWLEDGE_BASE_DETAILS.ERROR_MESSAGES.DETAILS_LOADING_FAILED'
     }
   ]
@@ -223,14 +223,14 @@ export class AiKnowledgeBaseDetailsEffects {
 
   // navigateBack$ = createEffect(() => {
   //   return this.actions$.pipe(
-  //     ofType(AiKnowledgeBaseDetailsActions.navigateBackButtonClicked),
+  //     ofType(AIKnowledgeBaseDetailsActions.navigateBackButtonClicked),
   //     concatLatestFrom(() => [this.store.select(selectBackNavigationPossible)]),
   //     switchMap(([, backNavigationPossible]) => {
   //       if (!backNavigationPossible) {
-  //         return of(AiKnowledgeBaseDetailsActions.backNavigationFailed())
+  //         return of(AIKnowledgeBaseDetailsActions.backNavigationFailed())
   //       }
   //       window.history.back()
-  //       return of(AiKnowledgeBaseDetailsActions.backNavigationStarted())
+  //       return of(AIKnowledgeBaseDetailsActions.backNavigationStarted())
   //     })
   //   )
   // })

@@ -1,10 +1,10 @@
 import { createSelector } from '@ngrx/store'
 import { createChildSelectors } from '@onecx/ngrx-accelerator'
 // import { selectBackNavigationPossible } from '../../../shared/selectors/onecx.selectors'
-import { AiKnowledgeBase } from '../../../shared/generated'
-import { aiKnowledgeBaseFeature } from '../../ai-knowledge-base.reducers'
+import { AIKnowledgeBase } from '../../../shared/generated'
+import { AIKnowledgeBaseFeature } from '../../ai-knowledge-base.reducers'
 import { initialState } from './ai-knowledge-base-details.reducers'
-import { AiKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.viewmodel'
+import { AIKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.viewmodel'
 
 // Taking original from accelerator create a lot of errors,it just doesn't see some variables apparently
 function selectBackNavigationPossible(state: Record<string, any>): boolean {
@@ -13,23 +13,24 @@ function selectBackNavigationPossible(state: Record<string, any>): boolean {
   return true
 }
 
-export const aiKnowledgeBaseDetailsSelectors = createChildSelectors(aiKnowledgeBaseFeature.selectDetails, initialState)
+export const AIKnowledgeBaseDetailsSelectors = createChildSelectors(AIKnowledgeBaseFeature.selectDetails, initialState)
+// export const aiKnowledadfadfgeBaseDetailsSelectors = createChildSelectors(selectBackNavigationPossible, initialState)
 
-export const selectAiKnowledgeBaseDetailsViewModel = createSelector(
-  aiKnowledgeBaseDetailsSelectors.selectDetails,
-  aiKnowledgeBaseDetailsSelectors.selectDetailsLoadingIndicator,
+export const selectAIKnowledgeBaseDetailsViewModel = createSelector(
+  AIKnowledgeBaseDetailsSelectors.selectDetails,
+  AIKnowledgeBaseDetailsSelectors.selectDetailsLoadingIndicator,
   selectBackNavigationPossible,
-  aiKnowledgeBaseDetailsSelectors.selectDetailsLoaded,
-  aiKnowledgeBaseDetailsSelectors.selectEditMode,
-  aiKnowledgeBaseDetailsSelectors.selectIsSubmitting,
+  AIKnowledgeBaseDetailsSelectors.selectDetailsLoaded,
+  AIKnowledgeBaseDetailsSelectors.selectEditMode,
+  AIKnowledgeBaseDetailsSelectors.selectIsSubmitting,
   (
-    details: AiKnowledgeBase | undefined,
+    details: AIKnowledgeBase | undefined,
     detailsLoadingIndicator: boolean,
     backNavigationPossible: boolean,
     detailsLoaded: boolean,
     editMode: boolean,
     isSubmitting: boolean
-  ): AiKnowledgeBaseDetailsViewModel => ({
+  ): AIKnowledgeBaseDetailsViewModel => ({
     details,
     detailsLoadingIndicator,
     backNavigationPossible,

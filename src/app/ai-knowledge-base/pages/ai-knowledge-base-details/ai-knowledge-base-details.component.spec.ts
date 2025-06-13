@@ -11,16 +11,16 @@ import { BreadcrumbService, PortalCoreModule, UserService } from '@onecx/portal-
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { PrimeIcons } from 'primeng/api'
 import { of } from 'rxjs'
-// import { AiKnowledgeBaseDetailsActions } from './ai-knowledge-base-details.actions'
-import { AiKnowledgeBaseDetailsComponent } from './ai-knowledge-base-details.component'
-import { AiKnowledgeBaseDetailsHarness } from './ai-knowledge-base-details.harness'
+// import { AIKnowledgeBaseDetailsActions } from './ai-knowledge-base-details.actions'
+import { AIKnowledgeBaseDetailsComponent } from './ai-knowledge-base-details.component'
+import { AIKnowledgeBaseDetailsHarness } from './ai-knowledge-base-details.harness'
 import { initialState } from './ai-knowledge-base-details.reducers'
-import { selectAiKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.selectors'
-import { AiKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.viewmodel'
+import { selectAIKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.selectors'
+import { AIKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.viewmodel'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 // import { ofType } from '@ngrx/effects'
 
-describe('AiKnowledgeBaseDetailsComponent', () => {
+describe('AIKnowledgeBaseDetailsComponent', () => {
   const origAddEventListener = window.addEventListener
   const origPostMessage = window.postMessage
 
@@ -49,18 +49,18 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
     window.postMessage = origPostMessage
   })
 
-  let component: AiKnowledgeBaseDetailsComponent
-  let fixture: ComponentFixture<AiKnowledgeBaseDetailsComponent>
+  let component: AIKnowledgeBaseDetailsComponent
+  let fixture: ComponentFixture<AIKnowledgeBaseDetailsComponent>
   let store: MockStore<Store>
   let breadcrumbService: BreadcrumbService
-  let aiKnowledgeBaseDetails: AiKnowledgeBaseDetailsHarness
+  let AIKnowledgeBaseDetails: AIKnowledgeBaseDetailsHarness
 
   const mockActivatedRoute = {
     snapshot: {
       data: {}
     }
   }
-  const baseAiKnowledgeBaseDetailsViewModel: AiKnowledgeBaseDetailsViewModel = {
+  const baseAIKnowledgeBaseDetailsViewModel: AIKnowledgeBaseDetailsViewModel = {
     details: undefined,
     detailsLoadingIndicator: false,
     detailsLoaded: true,
@@ -71,7 +71,7 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AiKnowledgeBaseDetailsComponent],
+      declarations: [AIKnowledgeBaseDetailsComponent],
       imports: [
         PortalCoreModule,
         LetDirective,
@@ -85,7 +85,7 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
       ],
       providers: [
         provideMockStore({
-          initialState: { aiKnowledgeBase: { details: initialState } }
+          initialState: { AIKnowledgeBase: { details: initialState } }
         }),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute }
@@ -98,14 +98,14 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
     translateService.use('en')
 
     store = TestBed.inject(MockStore)
-    store.overrideSelector(selectAiKnowledgeBaseDetailsViewModel, baseAiKnowledgeBaseDetailsViewModel)
+    store.overrideSelector(selectAIKnowledgeBaseDetailsViewModel, baseAIKnowledgeBaseDetailsViewModel)
     store.refreshState()
 
-    fixture = TestBed.createComponent(AiKnowledgeBaseDetailsComponent)
+    fixture = TestBed.createComponent(AIKnowledgeBaseDetailsComponent)
     component = fixture.componentInstance
     breadcrumbService = TestBed.inject(BreadcrumbService)
     fixture.detectChanges()
-    aiKnowledgeBaseDetails = await TestbedHarnessEnvironment.harnessForFixture(fixture, AiKnowledgeBaseDetailsHarness)
+    AIKnowledgeBaseDetails = await TestbedHarnessEnvironment.harnessForFixture(fixture, AIKnowledgeBaseDetailsHarness)
   })
 
   it('should create', () => {
@@ -119,19 +119,19 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
     fixture.detectChanges()
 
     expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1)
-    const pageHeader = await aiKnowledgeBaseDetails.getHeader()
+    const pageHeader = await AIKnowledgeBaseDetails.getHeader()
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Details')
     expect(await searchBreadcrumbItem!.getText()).toEqual('Details')
   })
 
   it('should display translated headers', async () => {
-    const pageHeader = await aiKnowledgeBaseDetails.getHeader()
-    expect(await pageHeader.getHeaderText()).toEqual('AiKnowledgeBase Details')
-    expect(await pageHeader.getSubheaderText()).toEqual('Display of AiKnowledgeBase Details')
+    const pageHeader = await AIKnowledgeBaseDetails.getHeader()
+    expect(await pageHeader.getHeaderText()).toEqual('AIKnowledgeBase Details')
+    expect(await pageHeader.getSubheaderText()).toEqual('Display of AIKnowledgeBase Details')
   })
 
   it('should have 2 inline actions', async () => {
-    const pageHeader = await aiKnowledgeBaseDetails.getHeader()
+    const pageHeader = await AIKnowledgeBaseDetails.getHeader()
     const inlineActions = await pageHeader.getInlineActionButtons()
     expect(inlineActions.length).toBe(3)
 
@@ -146,9 +146,9 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
   //   jest.spyOn(window.history, 'back')
   //   const doneFn = jest.fn()
 
-  //   const pageHeader = await aiKnowledgeBaseDetails.getHeader()
+  //   const pageHeader = await AIKnowledgeBaseDetails.getHeader()
   //   const backAction = await pageHeader.getInlineActionButtonByLabel('Back')
-  //   store.scannedActions$.pipe(ofType(AiKnowledgeBaseDetailsActions.navigateBackButtonClicked)).subscribe(() => {
+  //   store.scannedActions$.pipe(ofType(AIKnowledgeBaseDetailsActions.navigateBackButtonClicked)).subscribe(() => {
   //     doneFn()
   //   })
   //   await backAction?.click()
@@ -176,7 +176,7 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
       }
     ])
 
-    const pageHeader = await aiKnowledgeBaseDetails.getHeader()
+    const pageHeader = await AIKnowledgeBaseDetails.getHeader()
     const objectDetails = await pageHeader.getObjectInfos()
     expect(objectDetails.length).toBe(4)
 

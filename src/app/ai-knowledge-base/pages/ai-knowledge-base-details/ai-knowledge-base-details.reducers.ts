@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store'
-import { AiKnowledgeBaseDetailsActions } from './ai-knowledge-base-details.actions'
-import { AiKnowledgeBaseDetailsState } from './ai-knowledge-base-details.state'
+import { AIKnowledgeBaseDetailsActions } from './ai-knowledge-base-details.actions'
+import { AIKnowledgeBaseDetailsState } from './ai-knowledge-base-details.state'
 
-export const initialState: AiKnowledgeBaseDetailsState = {
+export const initialState: AIKnowledgeBaseDetailsState = {
   details: { id: '', name: '', description: '', contexts: [], modificationCount: 0 },
   detailsLoadingIndicator: true,
   detailsLoaded: false,
@@ -10,11 +10,11 @@ export const initialState: AiKnowledgeBaseDetailsState = {
   isSubmitting: false
 }
 
-export const aiKnowledgeBaseDetailsReducer = createReducer(
+export const AIKnowledgeBaseDetailsReducer = createReducer(
   initialState,
   on(
-    AiKnowledgeBaseDetailsActions.aiKnowledgeBaseDetailsReceived,
-    (state: AiKnowledgeBaseDetailsState, { details }): AiKnowledgeBaseDetailsState => ({
+    AIKnowledgeBaseDetailsActions.aIKnowledgeBaseDetailsReceived,
+    (state: AIKnowledgeBaseDetailsState, { details }): AIKnowledgeBaseDetailsState => ({
       ...state,
       details,
       detailsLoadingIndicator: false,
@@ -22,8 +22,8 @@ export const aiKnowledgeBaseDetailsReducer = createReducer(
     })
   ),
   on(
-    AiKnowledgeBaseDetailsActions.aiKnowledgeBaseDetailsLoadingFailed,
-    (state: AiKnowledgeBaseDetailsState): AiKnowledgeBaseDetailsState => ({
+    AIKnowledgeBaseDetailsActions.aIKnowledgeBaseDetailsLoadingFailed,
+    (state: AIKnowledgeBaseDetailsState): AIKnowledgeBaseDetailsState => ({
       ...state,
       details: initialState.details,
       detailsLoadingIndicator: false,
@@ -31,21 +31,21 @@ export const aiKnowledgeBaseDetailsReducer = createReducer(
     })
   ),
   on(
-    AiKnowledgeBaseDetailsActions.navigatedToDetailsPage,
-    (): AiKnowledgeBaseDetailsState => ({
+    AIKnowledgeBaseDetailsActions.navigatedToDetailsPage,
+    (): AIKnowledgeBaseDetailsState => ({
       ...initialState
     })
   ),
   on(
-    AiKnowledgeBaseDetailsActions.editButtonClicked,
-    (state: AiKnowledgeBaseDetailsState): AiKnowledgeBaseDetailsState => ({
+    AIKnowledgeBaseDetailsActions.editButtonClicked,
+    (state: AIKnowledgeBaseDetailsState): AIKnowledgeBaseDetailsState => ({
       ...state,
       editMode: true
     })
   ),
   on(
-    AiKnowledgeBaseDetailsActions.saveButtonClicked,
-    (state: AiKnowledgeBaseDetailsState, { details }): AiKnowledgeBaseDetailsState => ({
+    AIKnowledgeBaseDetailsActions.saveButtonClicked,
+    (state: AIKnowledgeBaseDetailsState, { details }): AIKnowledgeBaseDetailsState => ({
       ...state,
       details,
       editMode: false,
@@ -53,19 +53,19 @@ export const aiKnowledgeBaseDetailsReducer = createReducer(
     })
   ),
   on(
-    AiKnowledgeBaseDetailsActions.cancelEditConfirmClicked,
-    AiKnowledgeBaseDetailsActions.cancelEditNotDirty,
-    AiKnowledgeBaseDetailsActions.updateAiKnowledgeBaseCancelled,
-    AiKnowledgeBaseDetailsActions.updateAiKnowledgeBaseSucceeded,
-    (state: AiKnowledgeBaseDetailsState): AiKnowledgeBaseDetailsState => ({
+    AIKnowledgeBaseDetailsActions.cancelEditConfirmClicked,
+    AIKnowledgeBaseDetailsActions.cancelEditNotDirty,
+    AIKnowledgeBaseDetailsActions.updateAIKnowledgeBaseCancelled,
+    AIKnowledgeBaseDetailsActions.updateAIKnowledgeBaseSucceeded,
+    (state: AIKnowledgeBaseDetailsState): AIKnowledgeBaseDetailsState => ({
       ...state,
       editMode: false,
       isSubmitting: false
     })
   ),
   on(
-    AiKnowledgeBaseDetailsActions.updateAiKnowledgeBaseFailed,
-    (state: AiKnowledgeBaseDetailsState): AiKnowledgeBaseDetailsState => ({
+    AIKnowledgeBaseDetailsActions.updateAIKnowledgeBaseFailed,
+    (state: AIKnowledgeBaseDetailsState): AIKnowledgeBaseDetailsState => ({
       ...state,
       isSubmitting: false
     })

@@ -16,26 +16,26 @@ import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs'
 import { PrimeIcons } from 'primeng/api'
 import { selectUrl } from 'src/app/shared/selectors/router.selectors'
 import {
-  AiKnowledgeBase,
-  AiKnowledgeBaseBffService,
-  CreateAiKnowledgeBaseRequest,
-  UpdateAiKnowledgeBaseRequest
+  AIKnowledgeBase,
+  AIKnowledgeBaseBffService,
+  CreateAIKnowledgeBaseRequest,
+  UpdateAIKnowledgeBaseRequest
 } from '../../../shared/generated'
-import { AiKnowledgeBaseSearchActions } from './ai-knowledge-base-search.actions'
-import { AiKnowledgeBaseSearchComponent } from './ai-knowledge-base-search.component'
-import { aiKnowledgeBaseSearchCriteriasSchema } from './ai-knowledge-base-search.parameters'
+import { AIKnowledgeBaseSearchActions } from './ai-knowledge-base-search.actions'
+import { AIKnowledgeBaseSearchComponent } from './ai-knowledge-base-search.component'
+import { AIKnowledgeBaseSearchCriteriasSchema } from './ai-knowledge-base-search.parameters'
 import {
-  aiKnowledgeBaseSearchSelectors,
-  selectAiKnowledgeBaseSearchViewModel
+  AIKnowledgeBaseSearchSelectors,
+  selectAIKnowledgeBaseSearchViewModel
 } from './ai-knowledge-base-search.selectors'
 import { AIKnowledgeBaseCreateUpdateComponent } from './dialogs/aiknowledge-base-create-update/aiknowledge-base-create-update.component'
 
 @Injectable()
-export class AiKnowledgeBaseSearchEffects {
+export class AIKnowledgeBaseSearchEffects {
   constructor(
     private actions$: Actions,
     @SkipSelf() private route: ActivatedRoute,
-    private aiKnowledgeBaseService: AiKnowledgeBaseBffService,
+    private aIKnowledgeBaseService: AIKnowledgeBaseBffService,
     private router: Router,
     private store: Store,
     private messageService: PortalMessageService,
@@ -47,13 +47,13 @@ export class AiKnowledgeBaseSearchEffects {
   syncParamsToUrl$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(AiKnowledgeBaseSearchActions.searchButtonClicked, AiKnowledgeBaseSearchActions.resetButtonClicked),
+        ofType(AIKnowledgeBaseSearchActions.searchButtonClicked, AIKnowledgeBaseSearchActions.resetButtonClicked),
         concatLatestFrom(() => [
-          this.store.select(aiKnowledgeBaseSearchSelectors.selectCriteria),
+          this.store.select(AIKnowledgeBaseSearchSelectors.selectCriteria),
           this.route.queryParams
         ]),
         tap(([, criteria, queryParams]) => {
-          const results = aiKnowledgeBaseSearchCriteriasSchema.safeParse(queryParams)
+          const results = AIKnowledgeBaseSearchCriteriasSchema.safeParse(queryParams)
           if (!results.success || !equal(criteria, results.data)) {
             const params = {
               ...criteria
@@ -76,7 +76,7 @@ export class AiKnowledgeBaseSearchEffects {
   detailsButtonClicked$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(AiKnowledgeBaseSearchActions.detailsButtonClicked),
+        ofType(AIKnowledgeBaseSearchActions.detailsButtonClicked),
         concatLatestFrom(() => this.store.select(selectUrl)),
         tap(([action, currentUrl]) => {
           const urlTree = this.router.parseUrl(currentUrl)
@@ -91,8 +91,8 @@ export class AiKnowledgeBaseSearchEffects {
 
   deleteButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AiKnowledgeBaseSearchActions.deleteButtonClicked),
-      concatLatestFrom(() => this.store.select(aiKnowledgeBaseSearchSelectors.selectResults)),
+      ofType(AIKnowledgeBaseSearchActions.deleteButtonClicked),
+      concatLatestFrom(() => this.store.select(AIKnowledgeBaseSearchSelectors.selectResults)),
       mergeMap(([action, results]) => {
         const itemToDelete = results.find((item) => item.id === action.id)
         console.log('ItemTO DELETEI: ', itemToDelete)
@@ -110,32 +110,32 @@ export class AiKnowledgeBaseSearchEffects {
             }
           )
           .pipe(
-            map((state): [DialogState<unknown>, AiKnowledgeBase | undefined] => {
+            map((state): [DialogState<unknown>, AIKnowledgeBase | undefined] => {
               return [state, itemToDelete]
             })
           )
       }),
       switchMap(([dialogResult, itemToDelete]) => {
         if (!dialogResult || dialogResult.button == 'secondary') {
-          return of(AiKnowledgeBaseSearchActions.deleteAiKnowledgeBaseCancelled())
+          return of(AIKnowledgeBaseSearchActions.deleteAIKnowledgeBaseCancelled())
         }
         if (!itemToDelete) {
           throw new Error('Item to delete not found!')
         }
 
-        return this.aiKnowledgeBaseService.deleteAiKnowledgeBase(itemToDelete.id).pipe(
+        return this.aIKnowledgeBaseService.deleteAIKnowledgeBase(itemToDelete.id).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.DELETE.SUCCESS'
             })
-            return AiKnowledgeBaseSearchActions.deleteAiKnowledgeBaseSucceeded()
+            return AIKnowledgeBaseSearchActions.deleteAIKnowledgeBaseSucceeded()
           }),
           catchError((error) => {
             this.messageService.error({
               summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.DELETE.ERROR'
             })
             return of(
-              AiKnowledgeBaseSearchActions.deleteAiKnowledgeBaseFailed({
+              AIKnowledgeBaseSearchActions.deleteAIKnowledgeBaseFailed({
                 error
               })
             )
@@ -147,9 +147,9 @@ export class AiKnowledgeBaseSearchEffects {
 
   createButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AiKnowledgeBaseSearchActions.createButtonClicked),
+      ofType(AIKnowledgeBaseSearchActions.createButtonClicked),
       switchMap(() => {
-        return this.portalDialogService.openDialog<AiKnowledgeBase | undefined>(
+        return this.portalDialogService.openDialog<AIKnowledgeBase | undefined>(
           'AI_KNOWLEDGE_BASE_CREATE_UPDATE.CREATE.HEADER',
           {
             type: AIKnowledgeBaseCreateUpdateComponent,
@@ -168,20 +168,20 @@ export class AiKnowledgeBaseSearchEffects {
       }),
       switchMap((dialogResult) => {
         if (!dialogResult || dialogResult.button == 'secondary') {
-          return of(AiKnowledgeBaseSearchActions.createAIKnowledgeBaseCancelled())
+          return of(AIKnowledgeBaseSearchActions.createAIKnowledgeBaseCancelled())
         }
         if (!dialogResult?.result) {
           throw new Error('DialogResult was not set as expected!')
         }
         const toCreateItem = {
           aIKnowledgeDocumentData: dialogResult.result
-        } as CreateAiKnowledgeBaseRequest
-        return this.aiKnowledgeBaseService.createAiKnowledgeBase(toCreateItem).pipe(
+        } as CreateAIKnowledgeBaseRequest
+        return this.aIKnowledgeBaseService.createAIKnowledgeBase(toCreateItem).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: 'AI_KNOWLEDGE_BASE_CREATE_UPDATE.CREATE.SUCCESS'
             })
-            return AiKnowledgeBaseSearchActions.createAIKnowledgeBaseSucceeded()
+            return AIKnowledgeBaseSearchActions.createAIKnowledgeBaseSucceeded()
           })
         )
       }),
@@ -190,7 +190,7 @@ export class AiKnowledgeBaseSearchEffects {
           summaryKey: 'AI_KNOWLEDGE_BASE_CREATE_UPDATE.CREATE.ERROR'
         })
         return of(
-          AiKnowledgeBaseSearchActions.createAIKnowledgeBaseFailed({
+          AIKnowledgeBaseSearchActions.createAIKnowledgeBaseFailed({
             error
           })
         )
@@ -200,13 +200,13 @@ export class AiKnowledgeBaseSearchEffects {
 
   editButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AiKnowledgeBaseSearchActions.editButtonClicked),
-      concatLatestFrom(() => this.store.select(aiKnowledgeBaseSearchSelectors.selectResults)),
+      ofType(AIKnowledgeBaseSearchActions.editButtonClicked),
+      concatLatestFrom(() => this.store.select(AIKnowledgeBaseSearchSelectors.selectResults)),
       map(([action, results]) => {
         return results.find((item) => item.id == action.id)
       }),
       mergeMap((itemToEdit) => {
-        return this.portalDialogService.openDialog<AiKnowledgeBase | undefined>(
+        return this.portalDialogService.openDialog<AIKnowledgeBase | undefined>(
           'AI_KNOWLEDGE_BASE_CREATE_UPDATE.UPDATE.HEADER',
           {
             type: AIKnowledgeBaseCreateUpdateComponent,
@@ -225,7 +225,7 @@ export class AiKnowledgeBaseSearchEffects {
       }),
       switchMap((dialogResult) => {
         if (!dialogResult || dialogResult.button == 'secondary') {
-          return of(AiKnowledgeBaseSearchActions.editAIKnowledgeBaseCancelled())
+          return of(AIKnowledgeBaseSearchActions.editAIKnowledgeBaseCancelled())
         }
         if (!dialogResult?.result) {
           throw new Error('DialogResult was not set as expected!')
@@ -233,13 +233,13 @@ export class AiKnowledgeBaseSearchEffects {
         const itemToEditId = dialogResult.result.id
         const itemToEdit = {
           aIKnowledgeDocumentData: dialogResult.result
-        } as UpdateAiKnowledgeBaseRequest
-        return this.aiKnowledgeBaseService.updateAiKnowledgeBase(itemToEditId, itemToEdit).pipe(
+        } as UpdateAIKnowledgeBaseRequest
+        return this.aIKnowledgeBaseService.updateAIKnowledgeBase(itemToEditId, itemToEdit).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: 'AI_KNOWLEDGE_BASE_CREATE_UPDATE.UPDATE.SUCCESS'
             })
-            return AiKnowledgeBaseSearchActions.editAIKnowledgeBaseSucceeded()
+            return AIKnowledgeBaseSearchActions.editAIKnowledgeBaseSucceeded()
           })
         )
       }),
@@ -248,7 +248,7 @@ export class AiKnowledgeBaseSearchEffects {
           summaryKey: 'AI_KNOWLEDGE_BASE_CREATE_UPDATE.UPDATE.ERROR'
         })
         return of(
-          AiKnowledgeBaseSearchActions.editAIKnowledgeBaseFailed({
+          AIKnowledgeBaseSearchActions.editAIKnowledgeBaseFailed({
             error
           })
         )
@@ -259,16 +259,16 @@ export class AiKnowledgeBaseSearchEffects {
   searchByUrl$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(routerNavigatedAction),
-      filterForNavigatedTo(this.router, AiKnowledgeBaseSearchComponent),
-      filterOutQueryParamsHaveNotChanged(this.router, aiKnowledgeBaseSearchCriteriasSchema, false),
-      concatLatestFrom(() => this.store.select(aiKnowledgeBaseSearchSelectors.selectCriteria)),
+      filterForNavigatedTo(this.router, AIKnowledgeBaseSearchComponent),
+      filterOutQueryParamsHaveNotChanged(this.router, AIKnowledgeBaseSearchCriteriasSchema, false),
+      concatLatestFrom(() => this.store.select(AIKnowledgeBaseSearchSelectors.selectCriteria)),
       switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
     )
   })
 
   performSearch(searchCriteria: Record<string, any>) {
-    return this.aiKnowledgeBaseService
-      .searchAiKnowledgeBases({
+    return this.aIKnowledgeBaseService
+      .searchAIKnowledgeBases({
         ...Object.entries(searchCriteria).reduce(
           (acc, [key, value]) => ({
             ...acc,
@@ -280,7 +280,7 @@ export class AiKnowledgeBaseSearchEffects {
       })
       .pipe(
         map(({ stream, size, number, totalElements, totalPages }) =>
-          AiKnowledgeBaseSearchActions.aiKnowledgeBaseSearchResultsReceived({
+          AIKnowledgeBaseSearchActions.aIKnowledgeBaseSearchResultsReceived({
             stream,
             size,
             number,
@@ -290,7 +290,7 @@ export class AiKnowledgeBaseSearchEffects {
         ),
         catchError((error) =>
           of(
-            AiKnowledgeBaseSearchActions.aiKnowledgeBaseSearchResultsLoadingFailed({
+            AIKnowledgeBaseSearchActions.aIKnowledgeBaseSearchResultsLoadingFailed({
               error
             })
           )
@@ -301,13 +301,13 @@ export class AiKnowledgeBaseSearchEffects {
   exportData$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(AiKnowledgeBaseSearchActions.exportButtonClicked),
-        concatLatestFrom(() => this.store.select(selectAiKnowledgeBaseSearchViewModel)),
+        ofType(AIKnowledgeBaseSearchActions.exportButtonClicked),
+        concatLatestFrom(() => this.store.select(selectAIKnowledgeBaseSearchViewModel)),
         map(([, viewModel]) => {
           this.exportDataService.exportCsv(
             viewModel.resultComponentState?.displayedColumns ?? [],
             viewModel.results,
-            'AiKnowledgeBase.csv'
+            'AIKnowledgeBase.csv'
           )
         })
       )
@@ -317,7 +317,7 @@ export class AiKnowledgeBaseSearchEffects {
 
   errorMessages: { action: Action; key: string }[] = [
     {
-      action: AiKnowledgeBaseSearchActions.aiKnowledgeBaseSearchResultsLoadingFailed,
+      action: AIKnowledgeBaseSearchActions.aIKnowledgeBaseSearchResultsLoadingFailed,
       key: 'AI_KNOWLEDGE_BASE_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED'
     }
   ]

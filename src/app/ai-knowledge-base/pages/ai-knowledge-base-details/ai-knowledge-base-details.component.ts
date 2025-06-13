@@ -5,19 +5,19 @@ import { map, Observable } from 'rxjs'
 
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { PrimeIcons } from 'primeng/api'
-import { AiKnowledgeBaseDetailsActions } from './ai-knowledge-base-details.actions'
-import { selectAiKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.selectors'
-import { AiKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.viewmodel'
+import { AIKnowledgeBaseDetailsActions } from './ai-knowledge-base-details.actions'
+import { selectAIKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.selectors'
+import { AIKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.viewmodel'
 
 @Component({
   selector: 'app-ai-knowledge-base-details',
   templateUrl: './ai-knowledge-base-details.component.html',
   styleUrls: ['./ai-knowledge-base-details.component.scss']
 })
-export class AiKnowledgeBaseDetailsComponent implements OnInit {
+export class AIKnowledgeBaseDetailsComponent implements OnInit {
   public formGroup: FormGroup
 
-  viewModel$: Observable<AiKnowledgeBaseDetailsViewModel> = this.store.select(selectAiKnowledgeBaseDetailsViewModel)
+  viewModel$: Observable<AIKnowledgeBaseDetailsViewModel> = this.store.select(selectAIKnowledgeBaseDetailsViewModel)
 
   headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
     map(() => {
@@ -40,7 +40,7 @@ export class AiKnowledgeBaseDetailsComponent implements OnInit {
           // permission: 'AI_KNOWLEDGE_BASE#BACK',
           showCondition: !vm.editMode,
           actionCallback: () => {
-            // this.store.dispatch(AiKnowledgeBaseDetailsActions.navigateBackButtonClicked())
+            // this.store.dispatch(AIKnowledgeBaseDetailsActions.navigateBackButtonClicked())
             window.history.back()
           }
         },
@@ -147,22 +147,22 @@ export class AiKnowledgeBaseDetailsComponent implements OnInit {
   }
 
   edit() {
-    this.store.dispatch(AiKnowledgeBaseDetailsActions.editButtonClicked())
+    this.store.dispatch(AIKnowledgeBaseDetailsActions.editButtonClicked())
   }
 
   cancel() {
-    this.store.dispatch(AiKnowledgeBaseDetailsActions.cancelButtonClicked({ dirty: this.formGroup.dirty }))
+    this.store.dispatch(AIKnowledgeBaseDetailsActions.cancelButtonClicked({ dirty: this.formGroup.dirty }))
   }
 
   save() {
     this.store.dispatch(
-      AiKnowledgeBaseDetailsActions.saveButtonClicked({
+      AIKnowledgeBaseDetailsActions.saveButtonClicked({
         details: this.formGroup.value
       })
     )
   }
 
   delete() {
-    this.store.dispatch(AiKnowledgeBaseDetailsActions.deleteButtonClicked())
+    this.store.dispatch(AIKnowledgeBaseDetailsActions.deleteButtonClicked())
   }
 }

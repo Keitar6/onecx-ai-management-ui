@@ -6,7 +6,7 @@ import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator'
 import { PortalMessageService } from '@onecx/portal-integration-angular'
-import { catchError, map, of, switchMap, tap } from 'rxjs'
+import { catchError, map,  of, switchMap, tap } from 'rxjs'
 import { selectRouteParam } from 'src/app/shared/selectors/router.selectors'
 import { AIKnowledgeVectorDbBffService } from '../../../shared/generated'
 import { AIKnowledgeVectorDbDetailsActions } from './ai-knowledge-vector-db-details.actions'
@@ -35,7 +35,7 @@ export class AIKnowledgeVectorDbDetailsEffects {
     )
   })
 
-  loadAIKnowledgeVectorDbById$ = createEffect(() => {
+  loadItemById$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AIKnowledgeVectorDbDetailsActions.navigatedToDetailsPage),
       switchMap(({ id }) =>
@@ -53,7 +53,25 @@ export class AIKnowledgeVectorDbDetailsEffects {
             )
           )
         )
-      )
+      ),
+      // mergeMap((data) => {
+      //   console.log('AAAA: ', data)
+      //   // Fetching for contexts
+      //   return this.AIKnowledgeVectorDbService.getAIKnowledgeVectorDbContextsById('').pipe(
+      //     map(({ result }) =>
+      //       AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsReceived({
+      //         contexts: result
+      //       })
+      //     ),
+      //     catchError((error) =>
+      //       of(
+      //         AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsLoadingFailed({
+      //           error
+      //         })
+      //       )
+      //     )
+      //   )
+      // })
     )
   })
 

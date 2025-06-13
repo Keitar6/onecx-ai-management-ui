@@ -1,7 +1,7 @@
-import { AiKnowledgeBase } from '../../../shared/generated'
+import { AIKnowledgeBase } from '../../../shared/generated'
 
-export interface AiKnowledgeBaseDetailsState {
-  details: AiKnowledgeBase | undefined
+export interface AIKnowledgeBaseDetailsState {
+  details: AIKnowledgeBase | undefined
   detailsLoadingIndicator: boolean
   detailsLoaded: boolean
   editMode: boolean

@@ -7,11 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AIKnowledgeBase } from './AIKnowledgeBase';
+import { AIContext } from './aIContext';
 
 
-export interface SearchAIKnowledgeBaseResponse { 
-    stream: Array<AIKnowledgeBase>;
+export interface SearchAIContextResponse { 
+    stream: Array<AIContext>;
     /**
      * Current page size.
      */

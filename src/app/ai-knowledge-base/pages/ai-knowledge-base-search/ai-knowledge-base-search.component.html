@@ -6,14 +6,14 @@
   <ocx-search-header
     [headline]="'AI_KNOWLEDGE_BASE_SEARCH.HEADER' | translate"
     [subheader]="'AI_KNOWLEDGE_BASE_SEARCH.SUB_HEADER' | translate"
-    (searched)="search(aiKnowledgeBaseSearchFormGroup)"
+    (searched)="search(AIKnowledgeBaseSearchFormGroup)"
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="true"
     [actions]="(headerActions$ | async) ?? []"
     (componentStateChanged)="searchHeaderComponentStateChanged($event)"
     [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
   >
-    <form [formGroup]="aiKnowledgeBaseSearchFormGroup">
+    <form [formGroup]="AIKnowledgeBaseSearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-2 md:col-2">
           <span class="p-float-label">

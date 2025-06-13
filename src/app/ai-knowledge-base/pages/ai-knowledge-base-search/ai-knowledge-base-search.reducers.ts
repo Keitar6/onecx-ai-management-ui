@@ -1,12 +1,12 @@
 import { routerNavigatedAction, RouterNavigatedAction } from '@ngrx/router-store'
 import { createReducer, on } from '@ngrx/store'
-import { AiKnowledgeBaseSearchActions } from './ai-knowledge-base-search.actions'
-import { aiKnowledgeBaseSearchColumns } from './ai-knowledge-base-search.columns'
-import { aiKnowledgeBaseSearchCriteriasSchema } from './ai-knowledge-base-search.parameters'
-import { AiKnowledgeBaseSearchState } from './ai-knowledge-base-search.state'
+import { AIKnowledgeBaseSearchActions } from './ai-knowledge-base-search.actions'
+import { AIKnowledgeBaseSearchColumns } from './ai-knowledge-base-search.columns'
+import { AIKnowledgeBaseSearchCriteriasSchema } from './ai-knowledge-base-search.parameters'
+import { AIKnowledgeBaseSearchState } from './ai-knowledge-base-search.state'
 
-export const initialState: AiKnowledgeBaseSearchState = {
-  columns: aiKnowledgeBaseSearchColumns,
+export const initialState: AIKnowledgeBaseSearchState = {
+  columns: AIKnowledgeBaseSearchColumns,
   results: [],
   displayedColumns: [],
   chartVisible: false,
@@ -18,10 +18,10 @@ export const initialState: AiKnowledgeBaseSearchState = {
   searchExecuted: false
 }
 
-export const aiKnowledgeBaseSearchReducer = createReducer(
+export const AIKnowledgeBaseSearchReducer = createReducer(
   initialState,
-  on(routerNavigatedAction, (state: AiKnowledgeBaseSearchState, action: RouterNavigatedAction) => {
-    const results = aiKnowledgeBaseSearchCriteriasSchema.safeParse(action.payload.routerState.root.queryParams)
+  on(routerNavigatedAction, (state: AIKnowledgeBaseSearchState, action: RouterNavigatedAction) => {
+    const results = AIKnowledgeBaseSearchCriteriasSchema.safeParse(action.payload.routerState.root.queryParams)
     if (results.success) {
       return {
         ...state,
@@ -32,8 +32,8 @@ export const aiKnowledgeBaseSearchReducer = createReducer(
     return state
   }),
   on(
-    AiKnowledgeBaseSearchActions.resetButtonClicked,
-    (state: AiKnowledgeBaseSearchState): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.resetButtonClicked,
+    (state: AIKnowledgeBaseSearchState): AIKnowledgeBaseSearchState => ({
       ...state,
       results: initialState.results,
       criteria: {},
@@ -41,15 +41,15 @@ export const aiKnowledgeBaseSearchReducer = createReducer(
     })
   ),
   on(
-    AiKnowledgeBaseSearchActions.searchButtonClicked,
-    (state: AiKnowledgeBaseSearchState, { searchCriteria }): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.searchButtonClicked,
+    (state: AIKnowledgeBaseSearchState, { searchCriteria }): AIKnowledgeBaseSearchState => ({
       ...state,
       criteria: searchCriteria
     })
   ),
   on(
-    AiKnowledgeBaseSearchActions.aiKnowledgeBaseSearchResultsReceived,
-    (state: AiKnowledgeBaseSearchState, { stream }): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.aIKnowledgeBaseSearchResultsReceived,
+    (state: AIKnowledgeBaseSearchState, { stream }): AIKnowledgeBaseSearchState => ({
       ...state,
       results: stream,
       searchLoadingIndicator: false,
@@ -57,44 +57,44 @@ export const aiKnowledgeBaseSearchReducer = createReducer(
     })
   ),
   on(
-    AiKnowledgeBaseSearchActions.aiKnowledgeBaseSearchResultsLoadingFailed,
-    (state: AiKnowledgeBaseSearchState): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.aIKnowledgeBaseSearchResultsLoadingFailed,
+    (state: AIKnowledgeBaseSearchState): AIKnowledgeBaseSearchState => ({
       ...state,
       results: [],
       searchLoadingIndicator: false
     })
   ),
   on(
-    AiKnowledgeBaseSearchActions.chartVisibilityToggled,
-    (state: AiKnowledgeBaseSearchState): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.chartVisibilityToggled,
+    (state: AIKnowledgeBaseSearchState): AIKnowledgeBaseSearchState => ({
       ...state,
       chartVisible: !state.chartVisible
     })
   ),
   on(
-    AiKnowledgeBaseSearchActions.resultComponentStateChanged,
-    (state: AiKnowledgeBaseSearchState, resultComponentState): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.resultComponentStateChanged,
+    (state: AIKnowledgeBaseSearchState, resultComponentState): AIKnowledgeBaseSearchState => ({
       ...state,
       resultComponentState
     })
   ),
   on(
-    AiKnowledgeBaseSearchActions.searchHeaderComponentStateChanged,
-    (state: AiKnowledgeBaseSearchState, searchHeaderComponentState): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.searchHeaderComponentStateChanged,
+    (state: AIKnowledgeBaseSearchState, searchHeaderComponentState): AIKnowledgeBaseSearchState => ({
       ...state,
       searchHeaderComponentState
     })
   ),
   on(
-    AiKnowledgeBaseSearchActions.diagramComponentStateChanged,
-    (state: AiKnowledgeBaseSearchState, diagramComponentState): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.diagramComponentStateChanged,
+    (state: AIKnowledgeBaseSearchState, diagramComponentState): AIKnowledgeBaseSearchState => ({
       ...state,
       diagramComponentState
     })
   ),
   on(
-    AiKnowledgeBaseSearchActions.displayedColumnsChanged,
-    (state: AiKnowledgeBaseSearchState, { displayedColumns }): AiKnowledgeBaseSearchState => ({
+    AIKnowledgeBaseSearchActions.displayedColumnsChanged,
+    (state: AIKnowledgeBaseSearchState, { displayedColumns }): AIKnowledgeBaseSearchState => ({
       ...state,
 
       displayedColumns: displayedColumns.map((v) => v.id)
