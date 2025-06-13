@@ -1,9 +1,17 @@
 import { createSelector } from '@ngrx/store'
 import { createChildSelectors } from '@onecx/ngrx-accelerator'
-import { AIKnowledgeVectorDb } from '../../../shared/generated'
+// import { selectBackNavigationPossible } from '../../../shared/selectors/onecx.selectors'
+import { AIContext, AIKnowledgeVectorDb } from '../../../shared/generated'
 import { AIKnowledgeVectorDbFeature } from '../../ai-knowledge-vector-db.reducers'
 import { initialState } from './ai-knowledge-vector-db-details.reducers'
 import { AIKnowledgeVectorDbDetailsViewModel } from './ai-knowledge-vector-db-details.viewmodel'
+
+// Taking original from accelerator create a lot of errors,it just doesn't see some variables apparently
+function selectBackNavigationPossible(state: Record<string, any>): boolean {
+  console.log('state: ', state)
+  // throw new Error('Function not implemented.')
+  return true
+}
 
 export const AIKnowledgeVectorDbDetailsSelectors = createChildSelectors(
   AIKnowledgeVectorDbFeature.selectDetails,
@@ -12,7 +20,33 @@ export const AIKnowledgeVectorDbDetailsSelectors = createChildSelectors(
 
 export const selectAIKnowledgeVectorDbDetailsViewModel = createSelector(
   AIKnowledgeVectorDbDetailsSelectors.selectDetails,
-  (details: AIKnowledgeVectorDb | undefined): AIKnowledgeVectorDbDetailsViewModel => ({
-    details
+  AIKnowledgeVectorDbDetailsSelectors.selectContexts,
+  selectBackNavigationPossible,
+  AIKnowledgeVectorDbDetailsSelectors.selectDetailsLoaded,
+  AIKnowledgeVectorDbDetailsSelectors.selectDetailsLoadingIndicator,
+  AIKnowledgeVectorDbDetailsSelectors.selectContextsLoaded,
+  AIKnowledgeVectorDbDetailsSelectors.selectContextsLoadingIndicator,
+  AIKnowledgeVectorDbDetailsSelectors.selectEditMode,
+  AIKnowledgeVectorDbDetailsSelectors.selectIsSubmitting,
+  (
+    details: AIKnowledgeVectorDb | undefined,
+    contexts: AIContext[],
+    detailsLoaded: boolean,
+    detailsLoadingIndicator: boolean,
+    contextsLoaded: boolean,
+    contextsLoadingIndicator: boolean,
+    backNavigationPossible: boolean,
+    editMode: boolean,
+    isSubmitting: boolean
+  ): AIKnowledgeVectorDbDetailsViewModel => ({
+    details,
+    contexts,
+    detailsLoaded,
+    detailsLoadingIndicator,
+    contextsLoaded,
+    contextsLoadingIndicator,
+    backNavigationPossible,
+    editMode,
+    isSubmitting
   })
 )

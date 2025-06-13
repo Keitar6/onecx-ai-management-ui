@@ -16,9 +16,7 @@ import { AIKnowledgeBaseDetailsViewModel } from './ai-knowledge-base-details.vie
 })
 export class AIKnowledgeBaseDetailsComponent implements OnInit {
   public formGroup: FormGroup
-
   viewModel$: Observable<AIKnowledgeBaseDetailsViewModel> = this.store.select(selectAIKnowledgeBaseDetailsViewModel)
-
   headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
     map(() => {
       const labels: ObjectDetailItem[] = [
@@ -27,7 +25,6 @@ export class AIKnowledgeBaseDetailsComponent implements OnInit {
       return labels
     })
   )
-
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
       const actions: Action[] = [

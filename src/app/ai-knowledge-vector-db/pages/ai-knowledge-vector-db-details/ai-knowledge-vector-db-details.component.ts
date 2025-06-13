@@ -8,6 +8,7 @@ import { selectAIKnowledgeVectorDbDetailsViewModel } from './ai-knowledge-vector
 import { AIKnowledgeVectorDbDetailsViewModel } from './ai-knowledge-vector-db-details.viewmodel'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { AIKnowledgeVectorDbSearchActions } from '../ai-knowledge-vector-db-search/ai-knowledge-vector-db-search.actions'
+import { AIContext } from 'src/app/shared/generated'
 
 @Component({
   selector: 'app-ai-knowledge-vector-db-details',
@@ -15,8 +16,47 @@ import { AIKnowledgeVectorDbSearchActions } from '../ai-knowledge-vector-db-sear
   styleUrls: ['./ai-knowledge-vector-db-details.component.scss']
 })
 export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
-  viewModel$!: Observable<AIKnowledgeVectorDbDetailsViewModel> 
-  headerActions$!: Observable<Action[]>
+  viewModel$: Observable<AIKnowledgeVectorDbDetailsViewModel> = this.store.select(
+    selectAIKnowledgeVectorDbDetailsViewModel
+  )
+  headerActions$: Observable<Action[]> = this.viewModel$.pipe(
+    map((vm) => {
+      const actions: Action[] = [
+        {
+          titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.BACK',
+          labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.BACK',
+          show: 'always',
+          icon: PrimeIcons.ARROW_LEFT,
+          actionCallback: () => {
+            window.history.back()
+          }
+        },
+        {
+          titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.EDIT',
+          labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.EDIT',
+          show: 'always',
+          icon: PrimeIcons.PENCIL,
+          actionCallback: () => {
+            this.edit(vm.details?.id ?? '')
+          }
+        },
+        {
+          titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.DELETE',
+          labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.DELETE',
+          icon: PrimeIcons.TRASH,
+          show: 'asOverflow',
+          btnClass: '',
+          actionCallback: () => {
+            this.delete(vm.details?.id ?? '')
+          }
+        }
+      ]
+      return actions
+    })
+  )
+  displayContexts$: Observable<{ label: string; value: AIContext }[]> = this.viewModel$.pipe(
+    map(({ contexts }) => contexts.map((context) => ({ label: `${context.id}:${context.name}`, value: context })))
+  )
   public AIKnowledgeVectorDbSearchFormGroup!: FormGroup
   public formGroup: FormGroup
 
@@ -28,55 +68,20 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
       name: new FormControl(null, [Validators.maxLength(255)]),
       description: new FormControl(null, [Validators.maxLength(255)]),
       vdb: new FormControl(null, [Validators.maxLength(255)]),
-      vdbCollection: new FormControl(null, [Validators.maxLength(255)])
+      vdbCollection: new FormControl(null, [Validators.maxLength(255)]),
+      contexts: new FormControl([], [Validators.maxLength(255)])
     })
   }
 
   ngOnInit(): void {
-    this.viewModel$ = this.store.select(selectAIKnowledgeVectorDbDetailsViewModel)
-  
-    this.headerActions$ = this.viewModel$.pipe(
-      map((vm) => {
-        const actions: Action[] = [
-          {
-            titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.BACK',
-            labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.BACK',
-            show: 'always',
-            icon: PrimeIcons.ARROW_LEFT,
-            actionCallback: () => {
-              window.history.back()
-            }
-          },
-          {
-            titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.EDIT',
-            labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.EDIT',
-            show: 'always',
-            icon: PrimeIcons.PENCIL,
-            actionCallback: () => {
-              this.edit(vm.details?.id ?? '')
-            }
-          },
-          {
-            titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.DELETE',
-            labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.DELETE',
-            icon: PrimeIcons.TRASH,
-            show: 'asOverflow',
-            btnClass: '',
-            actionCallback: () => {
-              this.delete(vm.details?.id ?? '')
-            }
-          }
-        ]
-        return actions
-      })
-    )
-
     this.viewModel$.subscribe((AIKnVec) => {
+      console.log("ngOnInit viewModel: ",AIKnVec.contextsLoadingIndicator)
       this.formGroup.patchValue({
         name: AIKnVec.details?.name ?? '',
         description: AIKnVec.details?.description,
         vdb: AIKnVec.details?.vdb,
-        vdbCollection: AIKnVec.details?.vdbCollection
+        vdbCollection: AIKnVec.details?.vdbCollection,
+        contexts: AIKnVec.contexts
       })
     })
 
@@ -89,11 +94,11 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
     ])
   }
 
-  edit(id : string ) {
+  edit(id: string) {
     this.store.dispatch(AIKnowledgeVectorDbSearchActions.editAiKnowledgeVectorDbButtonClicked({ id }))
   }
 
-  delete(id : string ) {
-      this.store.dispatch(AIKnowledgeVectorDbSearchActions.deleteAiKnowledgeVectorDbButtonClicked({ id }))
+  delete(id: string) {
+    this.store.dispatch(AIKnowledgeVectorDbSearchActions.deleteAiKnowledgeVectorDbButtonClicked({ id }))
   }
 }
