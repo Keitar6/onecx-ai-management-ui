@@ -16,6 +16,7 @@ import { AIContext } from 'src/app/shared/generated'
   styleUrls: ['./ai-knowledge-vector-db-details.component.scss']
 })
 export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
+  public formGroup: FormGroup
   viewModel$: Observable<AIKnowledgeVectorDbDetailsViewModel> = this.store.select(
     selectAIKnowledgeVectorDbDetailsViewModel
   )
@@ -57,8 +58,6 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
   displayContexts$: Observable<{ label: string; value: AIContext }[]> = this.viewModel$.pipe(
     map(({ contexts }) => contexts.map((context) => ({ label: `${context.id}:${context.name}`, value: context })))
   )
-  public AIKnowledgeVectorDbSearchFormGroup!: FormGroup
-  public formGroup: FormGroup
 
   constructor(
     private store: Store,
@@ -75,7 +74,7 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.viewModel$.subscribe((AIKnVec) => {
-      console.log("ngOnInit viewModel: ",AIKnVec.contextsLoadingIndicator)
+      console.log('ngOnInit viewModel: ', AIKnVec)
       this.formGroup.patchValue({
         name: AIKnVec.details?.name ?? '',
         description: AIKnVec.details?.description,

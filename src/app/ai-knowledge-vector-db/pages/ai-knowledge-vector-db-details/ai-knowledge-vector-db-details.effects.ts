@@ -36,48 +36,50 @@ export class AIKnowledgeVectorDbDetailsEffects {
     )
   })
 
-  loadItemById$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(AIKnowledgeVectorDbDetailsActions.navigatedToDetailsPage),
-      switchMap(({ id }) =>
-        this.aiKnowledgeVectorDbService.getAIKnowledgeVectorDbById(id ?? '').pipe(
-          map(({ result }) =>
-            AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsReceived({
-              details: result
-            })
-          ),
-          catchError((error) =>
-            of(
-              AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsLoadingFailed({
-                error
+  loadItemById$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AIKnowledgeVectorDbDetailsActions.navigatedToDetailsPage),
+        switchMap(({ id }) => {
+          return this.aiKnowledgeVectorDbService.getAIKnowledgeVectorDbById(id ?? '').pipe(
+            tap((val) => console.log('✅ API response:', val)),
+            map(({ result }) =>
+              AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsReceived({
+                details: result
               })
+            ),
+            catchError((error) =>
+              of(
+                AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsLoadingFailed({
+                  error
+                })
+              )
             )
           )
-        )
-      ),
-      mergeMap((data) => {
-        console.log('Details: ', data)
-        const fetchAllReq: SearchAIContextRequest = { appId: '', name: '', description: '' }
-        // Fetching for contexts
-        return this.aiContextService.searchAIContexts(fetchAllReq).pipe(
-          map(({ stream }) => {
-            // console.log('CONTEXTS_STREAM: ', stream)
-
-            return AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsReceived({
-              contexts: stream
-            })
-          }),
-          catchError((error) =>
-            of(
-              AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsLoadingFailed({
-                error
+        }),
+        mergeMap((data) => {
+          console.log('Details: ', data)
+          const fetchAllReq: SearchAIContextRequest = { id: undefined, appId: '', name: '', description: '' }
+          // Fetching for contexts
+          return this.aiContextService.searchAIContexts(fetchAllReq).pipe(
+            map(({ stream }) =>
+              AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsReceived({
+                contexts: stream
               })
+            ),
+            catchError((error) =>
+              of(
+                AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsLoadingFailed({
+                  error
+                })
+              )
             )
           )
-        )
-      })
-    )
-  })
+        })
+      )
+    },
+    { dispatch: true }
+  )
 
   errorMessages: { action: Action; key: string }[] = [
     {
