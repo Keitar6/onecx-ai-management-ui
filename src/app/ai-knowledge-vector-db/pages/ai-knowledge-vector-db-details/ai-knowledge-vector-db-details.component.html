@@ -3,9 +3,11 @@
   [helpArticleId]="'AI_KNOWLEDGE_VECTOR_DB_DETAILS.HELP_ARTICLE_ID' | translate"
   *ngrxLet="viewModel$; let vm"
 >
+  <!-- <div>indicator: {{vm.detailsLoadingIndicator}}</div>
+  <div>if loaded: {{vm.detailsLoaded}}</div>
   <ocx-loading-indicator *ngIf="vm.detailsLoadingIndicator"> </ocx-loading-indicator>
-  <ocx-data-loading-error *ngIf="!vm.detailsLoaded && !vm.detailsLoadingIndicator"> </ocx-data-loading-error>
-  <div *ngIf="vm.detailsLoaded && !vm.detailsLoadingIndicator">
+  <ocx-data-loading-error *ngIf="!vm.detailsLoaded && !vm.detailsLoadingIndicator"> </ocx-data-loading-error> -->
+  <div>
     <ocx-page-header
       [header]="'AI_KNOWLEDGE_VECTOR_DB_DETAILS.HEADER' | translate"
       [subheader]="'AI_KNOWLEDGE_VECTOR_DB_DETAILS.SUB_HEADER' | translate"
@@ -82,12 +84,11 @@
             <span class="p-float-label mb-1" controlErrorAnchor>
               <p-dropdown
                 [options]="(displayContexts$ | async) ?? []"
-                formControlName="aicontext"
+                formControlName="aiContext"
                 [filter]="true"
                 optionLabel="label"
-                placeholder="Select an aicontext"
+                placeholder="Select an ai context"
                 styleClass="w-full"
-                (loading)="vm.contextsLoadingIndicator"
               >
               </p-dropdown>
               <label class="ocx-required-label" for="aIKnowledgeVectorDb_detail_aicontext">

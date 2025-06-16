@@ -6,7 +6,7 @@ import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator'
 import { PortalMessageService } from '@onecx/portal-integration-angular'
-import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs'
+import { catchError, map, of, switchMap, tap } from 'rxjs'
 import { selectRouteParam } from 'src/app/shared/selectors/router.selectors'
 import { AIContextBffService, AIKnowledgeVectorDbBffService, SearchAIContextRequest } from '../../../shared/generated'
 import { AIKnowledgeVectorDbDetailsActions } from './ai-knowledge-vector-db-details.actions'
@@ -36,50 +36,52 @@ export class AIKnowledgeVectorDbDetailsEffects {
     )
   })
 
-  loadItemById$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(AIKnowledgeVectorDbDetailsActions.navigatedToDetailsPage),
-        switchMap(({ id }) => {
-          return this.aiKnowledgeVectorDbService.getAIKnowledgeVectorDbById(id ?? '').pipe(
-            tap((val) => console.log('✅ API response:', val)),
-            map(({ result }) =>
-              AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsReceived({
-                details: result
+  loadItemById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AIKnowledgeVectorDbDetailsActions.navigatedToDetailsPage),
+      switchMap(({ id }) => {
+        return this.aiKnowledgeVectorDbService.getAIKnowledgeVectorDbById(id ?? '').pipe(
+          map(({ result }) =>
+            AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsReceived({
+              details: result
+            })
+          ),
+          catchError((error) =>
+            of(
+              AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsLoadingFailed({
+                error
               })
-            ),
-            catchError((error) =>
-              of(
-                AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsLoadingFailed({
-                  error
-                })
-              )
             )
           )
-        }),
-        mergeMap((data) => {
-          console.log('Details: ', data)
-          const fetchAllReq: SearchAIContextRequest = { id: undefined, appId: '', name: '', description: '' }
-          // Fetching for contexts
-          return this.aiContextService.searchAIContexts(fetchAllReq).pipe(
-            map(({ stream }) =>
-              AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsReceived({
-                contexts: stream
+        )
+      })
+    )
+  })
+  loadContextsById$ = createEffect(() => {
+    return this.actions$.pipe(
+      tap((action) => console.log('Action dispatched:', action)),
+      ofType(AIKnowledgeVectorDbDetailsActions.navigatedToDetailsPage),
+      switchMap(({ id }) => {
+        // Fetching all available contexts
+        console.log('loading contexts: ', id)
+        const fetchAllReq: SearchAIContextRequest = { id: undefined, appId: '', name: '', description: '' }
+        return this.aiContextService.searchAIContexts(fetchAllReq).pipe(
+          map(({ stream }) =>
+            AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsReceived({
+              contexts: stream
+            })
+          ),
+          catchError((error) =>
+            of(
+              AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsLoadingFailed({
+                error
               })
-            ),
-            catchError((error) =>
-              of(
-                AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsLoadingFailed({
-                  error
-                })
-              )
             )
           )
-        })
-      )
-    },
-    { dispatch: true }
-  )
+        )
+      })
+    )
+  })
 
   errorMessages: { action: Action; key: string }[] = [
     {

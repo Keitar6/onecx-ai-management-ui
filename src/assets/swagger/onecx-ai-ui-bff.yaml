@@ -752,6 +752,7 @@ components:
           type: string
         vdbCollection:
           type: string
+        
     SearchAIKnowledgeVectorDbResponse:
       type: object
       required:

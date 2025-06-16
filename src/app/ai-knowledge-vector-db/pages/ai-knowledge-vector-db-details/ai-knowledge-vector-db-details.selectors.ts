@@ -7,8 +7,7 @@ import { initialState } from './ai-knowledge-vector-db-details.reducers'
 import { AIKnowledgeVectorDbDetailsViewModel } from './ai-knowledge-vector-db-details.viewmodel'
 
 // Taking original from accelerator create a lot of errors,it just doesn't see some variables apparently
-function selectBackNavigationPossible(state: Record<string, any>): boolean {
-  console.log('state: ', state)
+function selectBackNavigationPossible(): boolean {
   // throw new Error('Function not implemented.')
   return true
 }
@@ -37,7 +36,7 @@ export const selectAIKnowledgeVectorDbDetailsViewModel = createSelector(
     contextsLoadingIndicator: boolean,
     backNavigationPossible: boolean,
     editMode: boolean,
-    isSubmitting: boolean
+    isSubmitting
   ): AIKnowledgeVectorDbDetailsViewModel => ({
     details,
     contexts,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Store } from '@ngrx/store'
 import { Action, BreadcrumbService } from '@onecx/portal-integration-angular'
-import { map, Observable } from 'rxjs'
+import { combineLatest, map, Observable, tap } from 'rxjs'
 
 import { PrimeIcons } from 'primeng/api'
 import { selectAIKnowledgeVectorDbDetailsViewModel } from './ai-knowledge-vector-db-details.selectors'
@@ -17,9 +17,10 @@ import { AIContext } from 'src/app/shared/generated'
 })
 export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
   public formGroup: FormGroup
-  viewModel$: Observable<AIKnowledgeVectorDbDetailsViewModel> = this.store.select(
-    selectAIKnowledgeVectorDbDetailsViewModel
-  )
+  viewModel$: Observable<AIKnowledgeVectorDbDetailsViewModel> = this.store
+    .select(selectAIKnowledgeVectorDbDetailsViewModel)
+    .pipe(tap(console.log))
+
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(
     map((vm) => {
       const actions: Action[] = [
@@ -56,7 +57,7 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
     })
   )
   displayContexts$: Observable<{ label: string; value: AIContext }[]> = this.viewModel$.pipe(
-    map(({ contexts }) => contexts.map((context) => ({ label: `${context.id}:${context.name}`, value: context })))
+    map(({ contexts }) => this.getContextFormValue(contexts))
   )
 
   constructor(
@@ -64,23 +65,23 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
     private breadcrumbService: BreadcrumbService
   ) {
     this.formGroup = new FormGroup({
-      name: new FormControl(null, [Validators.maxLength(255)]),
-      description: new FormControl(null, [Validators.maxLength(255)]),
-      vdb: new FormControl(null, [Validators.maxLength(255)]),
-      vdbCollection: new FormControl(null, [Validators.maxLength(255)]),
-      contexts: new FormControl([], [Validators.maxLength(255)])
+      name: new FormControl('', [Validators.maxLength(255)]),
+      description: new FormControl('', [Validators.maxLength(255)]),
+      vdb: new FormControl('', [Validators.maxLength(255)]),
+      vdbCollection: new FormControl('', [Validators.maxLength(255)]),
+      aiContext: new FormControl({ label: '', value: {} })
     })
   }
 
   ngOnInit(): void {
-    this.viewModel$.subscribe((AIKnVec) => {
-      console.log('ngOnInit viewModel: ', AIKnVec)
+    combineLatest([this.viewModel$, this.displayContexts$]).subscribe(([AIKnVec, contexts]) => {
+      const matchedContext = contexts.find((context) => context.value.id === AIKnVec.details?.aiContext?.id) ?? null
       this.formGroup.patchValue({
         name: AIKnVec.details?.name ?? '',
         description: AIKnVec.details?.description,
         vdb: AIKnVec.details?.vdb,
         vdbCollection: AIKnVec.details?.vdbCollection,
-        contexts: AIKnVec.contexts
+        aiContext: matchedContext
       })
     })
 
@@ -91,6 +92,10 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
         routerLink: '/ai-knowledge-vector-db'
       }
     ])
+  }
+
+  getContextFormValue(contexts: AIContext[]) {
+    return contexts.map((context) => ({ label: `${context.id}:${context.name}`, value: context }))
   }
 
   edit(id: string) {
