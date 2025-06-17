@@ -140,7 +140,6 @@ export class AIKnowledgeVectorDbDetailsEffects {
         const itemToEdit = {
           dataObject: { ...updatedItem, appId: itemToEditId }
         } as UpdateAIKnowledgeVectorDbUpdateRequest
-        console.log('AAAAAAAAA: ', itemToEditId, itemToEdit)
         return this.aiKnowledgeVectorDbService.updateAIKnowledgeVectorDb(itemToEditId, itemToEdit).pipe(
           map(() => {
             this.messageService.success({
