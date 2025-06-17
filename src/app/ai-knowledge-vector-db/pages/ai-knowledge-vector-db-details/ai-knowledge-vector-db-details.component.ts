@@ -74,15 +74,21 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    combineLatest([this.viewModel$, this.displayContexts$]).subscribe(([AIKnVec, contexts]) => {
-      const matchedContext = contexts.find((context) => context.value.id === AIKnVec.details?.aiContext?.id) ?? null
+    combineLatest([this.viewModel$, this.displayContexts$]).subscribe(([vm, contexts]) => {
+      const matchedContext = contexts.find((context) => context.value.id === vm.details?.aiContext?.id) ?? null
       this.formGroup.patchValue({
-        name: AIKnVec.details?.name ?? '',
-        description: AIKnVec.details?.description,
-        vdb: AIKnVec.details?.vdb,
-        vdbCollection: AIKnVec.details?.vdbCollection,
+        name: vm.details?.name ?? '',
+        description: vm.details?.description,
+        vdb: vm.details?.vdb,
+        vdbCollection: vm.details?.vdbCollection,
         aiContext: matchedContext
       })
+
+      if (vm.editMode) {
+        this.formGroup.enable()
+      } else {
+        this.formGroup.disable()
+      }
     })
 
     this.breadcrumbService.setItems([
