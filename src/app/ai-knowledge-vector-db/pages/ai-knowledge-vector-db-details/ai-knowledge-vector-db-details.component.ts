@@ -33,10 +33,7 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
       aiContext: new FormControl({ label: '', value: {} })
     })
 
-    this.viewModel$ = this.store
-      .select(selectAIKnowledgeVectorDbDetailsViewModel)
-      .pipe(tap((value) => console.log('first: ', value)))
-    // .pipe(tap((value) => console.log('seconds: ', value)))
+    this.viewModel$ = this.store.select(selectAIKnowledgeVectorDbDetailsViewModel)
 
     this.headerActions$ = this.viewModel$.pipe(
       map((vm) => {
@@ -73,7 +70,9 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
         return actions
       })
     )
-    this.displayContexts$ = this.viewModel$.pipe(map(({ contexts }) => this.getContextFormValue(contexts)))
+    this.displayContexts$ = this.viewModel$.pipe(
+      map(({ details, contexts }) => this.getContextFormValue([...contexts, details?.aiContext ?? {}]))
+    )
   }
 
   ngOnInit(): void {
