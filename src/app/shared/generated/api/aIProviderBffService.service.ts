@@ -17,21 +17,21 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { AIProviderCreateResponse } from '../model/aIProviderCreateResponse';
+import { CreateAIProviderResponse } from '../model/aIProviderCreateResponse';
 // @ts-ignore
 import { AIProviderSearchRequest } from '../model/aIProviderSearchRequest';
 // @ts-ignore
 import { AIProviderSearchResponse } from '../model/aIProviderSearchResponse';
 // @ts-ignore
-import { AIProviderUpdateResponse } from '../model/aIProviderUpdateResponse';
+import { UpdateAIProviderResponse } from '../model/aIProviderUpdateResponse';
 // @ts-ignore
-import { CreateAIProvider } from '../model/createAIProvider';
+import { CreateAIProviderRequest } from '../model/createAIProvider';
 // @ts-ignore
 import { GetAIProviderByIdResponse } from '../model/getAIProviderByIdResponse';
 // @ts-ignore
 import { ProblemDetailResponse } from '../model/problemDetailResponse';
 // @ts-ignore
-import { UpdateAIProvider } from '../model/updateAIProvider';
+import { UpdateAIProviderRequest } from '../model/updateAIProvider';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -110,10 +110,10 @@ export class AIProviderBffService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAIProvider(createAIProvider: CreateAIProvider, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AIProviderCreateResponse>;
-    public createAIProvider(createAIProvider: CreateAIProvider, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AIProviderCreateResponse>>;
-    public createAIProvider(createAIProvider: CreateAIProvider, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AIProviderCreateResponse>>;
-    public createAIProvider(createAIProvider: CreateAIProvider, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createAIProvider(createAIProvider: CreateAIProviderRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CreateAIProviderResponse>;
+    public createAIProvider(createAIProvider: CreateAIProviderRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CreateAIProviderResponse>>;
+    public createAIProvider(createAIProvider: CreateAIProviderRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CreateAIProviderResponse>>;
+    public createAIProvider(createAIProvider: CreateAIProviderRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (createAIProvider === null || createAIProvider === undefined) {
             throw new Error('Required parameter createAIProvider was null or undefined when calling createAIProvider.');
         }
@@ -159,7 +159,7 @@ export class AIProviderBffService {
         }
 
         let localVarPath = `/aIProvider`;
-        return this.httpClient.request<AIProviderCreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateAIProviderResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: createAIProvider,
@@ -358,10 +358,10 @@ export class AIProviderBffService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateAIProvider(id: string, updateAIProvider: UpdateAIProvider, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AIProviderUpdateResponse>;
-    public updateAIProvider(id: string, updateAIProvider: UpdateAIProvider, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AIProviderUpdateResponse>>;
-    public updateAIProvider(id: string, updateAIProvider: UpdateAIProvider, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AIProviderUpdateResponse>>;
-    public updateAIProvider(id: string, updateAIProvider: UpdateAIProvider, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateAIProvider(id: string, updateAIProvider: UpdateAIProviderRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<UpdateAIProviderResponse>;
+    public updateAIProvider(id: string, updateAIProvider: UpdateAIProviderRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<UpdateAIProviderResponse>>;
+    public updateAIProvider(id: string, updateAIProvider: UpdateAIProviderRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<UpdateAIProviderResponse>>;
+    public updateAIProvider(id: string, updateAIProvider: UpdateAIProviderRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateAIProvider.');
         }
@@ -410,7 +410,7 @@ export class AIProviderBffService {
         }
 
         let localVarPath = `/aIProvider/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<AIProviderUpdateResponse>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<UpdateAIProviderResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: updateAIProvider,

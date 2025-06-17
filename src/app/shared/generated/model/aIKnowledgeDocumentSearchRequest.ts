@@ -9,14 +9,14 @@
  */
 
 
-export interface AIKnowledgeDocumentSearchRequest { 
+export interface SearchAIKnowledgeDocumentRequest { 
     limit?: number;
     id?: string;
     name?: string;
     documentRefId?: string;
-    status?: AIKnowledgeDocumentSearchRequestStatusEnum;
+    status?: SearchAIKnowledgeDocumentRequestStatusEnum;
 }
-export enum AIKnowledgeDocumentSearchRequestStatusEnum {
+export enum SearchAIKnowledgeDocumentRequestStatusEnum {
     New = 'NEW',
     Processing = 'PROCESSING',
     Embedded = 'EMBEDDED'

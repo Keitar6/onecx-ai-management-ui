@@ -9,6 +9,7 @@
     <ocx-page-header
       [header]="'AI_KNOWLEDGE_VECTOR_DB_DETAILS.HEADER' | translate"
       [subheader]="'AI_KNOWLEDGE_VECTOR_DB_DETAILS.SUB_HEADER' | translate"
+      [objectDetails]="(headerLabels$ | async) ?? []"
       [actions]="(headerActions$ | async) ?? []"
       [disableDefaultActions]="true"
       [manualBreadcrumbs]="true"
@@ -87,7 +88,7 @@
                 optionLabel="label"
                 placeholder="Select an ai context"
                 styleClass="w-full"
-                (loading)="vm.contextsLoadingIndicator"
+                [loading]="vm.contextsLoadingIndicator"
               >
               </p-dropdown>
               <label class="ocx-required-label" for="aIKnowledgeVectorDb_detail_aicontext">

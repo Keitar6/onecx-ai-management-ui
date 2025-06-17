@@ -9,7 +9,7 @@
  */
 
 
-export interface AIKnowledgeDocumentUpdateResponse { 
+export interface UpdateAIKnowledgeDocumentResponse { 
     id?: string;
     name: string;
     documentRefId: string;

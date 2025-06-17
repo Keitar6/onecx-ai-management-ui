@@ -18,7 +18,11 @@ import {
 import equal from 'fast-deep-equal'
 import { PrimeIcons } from 'primeng/api'
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs'
-import { AIKnowledgeDocument, CreateAIKnowledgeDocument, UpdateAIKnowledgeDocument } from 'src/app/shared/generated'
+import {
+  AIKnowledgeDocument,
+  CreateAIKnowledgeDocumentRequest,
+  UpdateAIKnowledgeDocumentRequest
+} from 'src/app/shared/generated'
 import { selectUrl } from 'src/app/shared/selectors/router.selectors'
 import { AIKnowledgeDocumentBffService } from '../../../shared/generated'
 import { AIKnowledgeDocumentSearchActions } from './aiknowledge-document-search.actions'
@@ -41,7 +45,7 @@ export class AIKnowledgeDocumentSearchEffects {
     private store: Store,
     private messageService: PortalMessageService,
     private readonly exportDataService: ExportDataService
-  ) { }
+  ) {}
 
   syncParamsToUrl$ = createEffect(
     () => {
@@ -135,7 +139,7 @@ export class AIKnowledgeDocumentSearchEffects {
         const itemToEditId = dialogResult.result.id
         const itemToEdit = {
           aIKnowledgeDocumentData: dialogResult.result
-        } as UpdateAIKnowledgeDocument
+        } as UpdateAIKnowledgeDocumentRequest
         return this.aIKnowledgeDocumentService.updateAIKnowledgeDocument(itemToEditId, itemToEdit).pipe(
           map(() => {
             this.messageService.success({
@@ -188,7 +192,7 @@ export class AIKnowledgeDocumentSearchEffects {
         }
         const toCreateItem = {
           aIKnowledgeDocumentData: dialogResult.result
-        } as CreateAIKnowledgeDocument
+        } as CreateAIKnowledgeDocumentRequest
         return this.aIKnowledgeDocumentService.createAIKnowledgeDocument(toCreateItem).pipe(
           map(() => {
             this.messageService.success({

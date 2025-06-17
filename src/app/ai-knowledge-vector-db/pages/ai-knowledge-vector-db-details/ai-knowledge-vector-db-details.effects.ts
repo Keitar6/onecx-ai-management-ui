@@ -5,12 +5,20 @@ import { concatLatestFrom } from '@ngrx/operators'
 import { routerNavigatedAction } from '@ngrx/router-store'
 import { Action, Store } from '@ngrx/store'
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator'
-import { PortalMessageService } from '@onecx/portal-integration-angular'
-import { catchError, map, of, switchMap, tap } from 'rxjs'
-import { selectRouteParam } from 'src/app/shared/selectors/router.selectors'
-import { AIContextBffService, AIKnowledgeVectorDbBffService, SearchAIContextRequest } from '../../../shared/generated'
+import { DialogState, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular'
+import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs'
+import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors'
+import {
+  AIContextBffService,
+  AIKnowledgeVectorDb,
+  AIKnowledgeVectorDbBffService,
+  UpdateAIKnowledgeVectorDbUpdateRequest,
+  SearchAIContextRequest
+} from '../../../shared/generated'
 import { AIKnowledgeVectorDbDetailsActions } from './ai-knowledge-vector-db-details.actions'
 import { AIKnowledgeVectorDbDetailsComponent } from './ai-knowledge-vector-db-details.component'
+import { AIKnowledgeVectorDbDetailsSelectors } from './ai-knowledge-vector-db-details.selectors'
+import { PrimeIcons } from 'primeng/api'
 
 @Injectable()
 export class AIKnowledgeVectorDbDetailsEffects {
@@ -20,7 +28,8 @@ export class AIKnowledgeVectorDbDetailsEffects {
     private aiContextService: AIContextBffService,
     private router: Router,
     private store: Store,
-    private messageService: PortalMessageService
+    private messageService: PortalMessageService,
+    private portalDialogService: PortalDialogService
   ) {}
 
   navigatedToDetailsPage$ = createEffect(() => {
@@ -84,6 +93,147 @@ export class AIKnowledgeVectorDbDetailsEffects {
     )
   })
 
+  cancelButtonNotDirty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AIKnowledgeVectorDbDetailsActions.cancelButtonClicked),
+      filter((action) => !action.dirty),
+      map(() => {
+        return AIKnowledgeVectorDbDetailsActions.cancelEditNotDirty()
+      })
+    )
+  })
+
+  cancelButtonClickedDirty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AIKnowledgeVectorDbDetailsActions.cancelButtonClicked),
+      filter((action) => action.dirty),
+      switchMap(() => {
+        return this.portalDialogService.openDialog<AIKnowledgeVectorDb | undefined>(
+          'AI_KNOWLEDGE_BASE_DETAILS.CANCEL.HEADER',
+          'AI_KNOWLEDGE_BASE_DETAILS.CANCEL.MESSAGE',
+          'AI_KNOWLEDGE_BASE_DETAILS.CANCEL.CONFIRM'
+        )
+      }),
+      switchMap((dialogResult) => {
+        if (!dialogResult || dialogResult.button == 'secondary') {
+          return of(AIKnowledgeVectorDbDetailsActions.cancelEditBackClicked())
+        }
+        return of(AIKnowledgeVectorDbDetailsActions.cancelEditConfirmClicked())
+      })
+    )
+  })
+
+  saveButtonClicked$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AIKnowledgeVectorDbDetailsActions.saveButtonClicked),
+      concatLatestFrom(() => this.store.select(AIKnowledgeVectorDbDetailsSelectors.selectDetails)),
+      switchMap(([action, details]) => {
+        const itemToEditId = details?.id
+        const updatedItem = {
+          ...details,
+          ...action.details
+        }
+
+        if (!itemToEditId) {
+          return of(AIKnowledgeVectorDbDetailsActions.updateAIKnowledgeVectorDbCancelled())
+        }
+        const itemToEdit = {
+          dataObject: { ...updatedItem, appId: itemToEditId }
+        } as UpdateAIKnowledgeVectorDbUpdateRequest
+        console.log('AAAAAAAAA: ', itemToEditId, itemToEdit)
+        return this.aiKnowledgeVectorDbService.updateAIKnowledgeVectorDb(itemToEditId, itemToEdit).pipe(
+          map(() => {
+            this.messageService.success({
+              summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.UPDATE.SUCCESS'
+            })
+            return AIKnowledgeVectorDbDetailsActions.updateAIKnowledgeVectorDbSucceeded()
+          }),
+          catchError((error) => {
+            this.messageService.error({
+              summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.UPDATE.ERROR'
+            })
+            return of(
+              AIKnowledgeVectorDbDetailsActions.updateAIKnowledgeVectorDbFailed({
+                error
+              })
+            )
+          })
+        )
+      })
+    )
+  })
+  deleteButtonClicked$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AIKnowledgeVectorDbDetailsActions.deleteButtonClicked),
+      concatLatestFrom(() => this.store.select(AIKnowledgeVectorDbDetailsSelectors.selectDetails)),
+      mergeMap(([, itemToDelete]) => {
+        return this.portalDialogService
+          .openDialog<unknown>(
+            'AI_KNOWLEDGE_BASE_DETAILS.DELETE.HEADER',
+            'AI_KNOWLEDGE_BASE_DETAILS.DELETE.MESSAGE',
+            {
+              key: 'AI_KNOWLEDGE_BASE_DETAILS.DELETE.CONFIRM',
+              icon: PrimeIcons.CHECK
+            },
+            {
+              key: 'AI_KNOWLEDGE_BASE_DETAILS.DELETE.CANCEL',
+              icon: PrimeIcons.TIMES
+            }
+          )
+          .pipe(
+            map((state): [DialogState<unknown>, AIKnowledgeVectorDb | undefined] => {
+              return [state, itemToDelete]
+            })
+          )
+      }),
+      switchMap(([dialogResult, itemToDelete]) => {
+        if (!dialogResult || dialogResult.button == 'secondary') {
+          return of(AIKnowledgeVectorDbDetailsActions.deleteAIKnowledgeVectorDbCancelled())
+        }
+        if (!itemToDelete) {
+          throw new Error('Item to delete not found!')
+        }
+
+        return this.aiKnowledgeVectorDbService.deleteAIKnowledgeVectorDb(itemToDelete.id).pipe(
+          map(() => {
+            this.messageService.success({
+              summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.DELETE.SUCCESS'
+            })
+            return AIKnowledgeVectorDbDetailsActions.deleteAIKnowledgeVectorDbSucceeded()
+          }),
+          catchError((error) => {
+            this.messageService.error({
+              summaryKey: 'AI_KNOWLEDGE_BASE_DETAILS.DELETE.ERROR'
+            })
+            return of(
+              AIKnowledgeVectorDbDetailsActions.deleteAIKnowledgeVectorDbFailed({
+                error
+              })
+            )
+          })
+        )
+      })
+    )
+  })
+
+  deleteAIKnowledgeVectorDbSucceeded$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AIKnowledgeVectorDbDetailsActions.deleteAIKnowledgeVectorDbSucceeded),
+        concatLatestFrom(() => this.store.select(selectUrl)),
+        tap(([, currentUrl]) => {
+          const urlTree = this.router.parseUrl(currentUrl)
+          urlTree.queryParams = {}
+          urlTree.fragment = null
+
+          const targetUrl = urlTree.toString().split('/').slice(0, -2).join('/')
+          this.router.navigate([targetUrl])
+        })
+      )
+    },
+    { dispatch: false }
+  )
+
   errorMessages: { action: Action; key: string }[] = [
     {
       action: AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsLoadingFailed,
@@ -104,4 +254,18 @@ export class AIKnowledgeVectorDbDetailsEffects {
     },
     { dispatch: false }
   )
+
+  // navigateBack$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(AIKnowledgeBaseDetailsActions.navigateBackButtonClicked),
+  //     concatLatestFrom(() => [this.store.select(selectBackNavigationPossible)]),
+  //     switchMap(([, backNavigationPossible]) => {
+  //       if (!backNavigationPossible) {
+  //         return of(AIKnowledgeBaseDetailsActions.backNavigationFailed())
+  //       }
+  //       window.history.back()
+  //       return of(AIKnowledgeBaseDetailsActions.backNavigationStarted())
+  //     })
+  //   )
+  // })
 }

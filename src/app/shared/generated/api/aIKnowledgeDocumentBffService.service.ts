@@ -17,21 +17,21 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { AIKnowledgeDocumentCreateResponse } from '../model/aIKnowledgeDocumentCreateResponse';
+import { CreateAIKnowledgeDocumentRequestResponse } from '../model/aIKnowledgeDocumentCreateResponse';
 // @ts-ignore
-import { AIKnowledgeDocumentSearchRequest } from '../model/aIKnowledgeDocumentSearchRequest';
+import { SearchAIKnowledgeDocumentRequest } from '../model/aIKnowledgeDocumentSearchRequest';
 // @ts-ignore
-import { AIKnowledgeDocumentSearchResponse } from '../model/aIKnowledgeDocumentSearchResponse';
+import { SearchAIKnowledgeDocumentResponse } from '../model/aIKnowledgeDocumentSearchResponse';
 // @ts-ignore
-import { AIKnowledgeDocumentUpdateResponse } from '../model/aIKnowledgeDocumentUpdateResponse';
+import { UpdateAIKnowledgeDocumentResponse } from '../model/aIKnowledgeDocumentUpdateResponse';
 // @ts-ignore
-import { CreateAIKnowledgeDocument } from '../model/createAIKnowledgeDocument';
+import { CreateAIKnowledgeDocumentRequest } from '../model/createAIKnowledgeDocument';
 // @ts-ignore
 import { GetAIKnowledgeDocumentByIdResponse } from '../model/getAIKnowledgeDocumentByIdResponse';
 // @ts-ignore
 import { ProblemDetailResponse } from '../model/problemDetailResponse';
 // @ts-ignore
-import { UpdateAIKnowledgeDocument } from '../model/updateAIKnowledgeDocument';
+import { UpdateAIKnowledgeDocumentRequest } from '../model/updateAIKnowledgeDocument';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -110,10 +110,10 @@ export class AIKnowledgeDocumentBffService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAIKnowledgeDocument(createAIKnowledgeDocument: CreateAIKnowledgeDocument, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AIKnowledgeDocumentCreateResponse>;
-    public createAIKnowledgeDocument(createAIKnowledgeDocument: CreateAIKnowledgeDocument, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AIKnowledgeDocumentCreateResponse>>;
-    public createAIKnowledgeDocument(createAIKnowledgeDocument: CreateAIKnowledgeDocument, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AIKnowledgeDocumentCreateResponse>>;
-    public createAIKnowledgeDocument(createAIKnowledgeDocument: CreateAIKnowledgeDocument, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createAIKnowledgeDocument(createAIKnowledgeDocument: CreateAIKnowledgeDocumentRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CreateAIKnowledgeDocumentRequestResponse>;
+    public createAIKnowledgeDocument(createAIKnowledgeDocument: CreateAIKnowledgeDocumentRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CreateAIKnowledgeDocumentRequestResponse>>;
+    public createAIKnowledgeDocument(createAIKnowledgeDocument: CreateAIKnowledgeDocumentRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CreateAIKnowledgeDocumentRequestResponse>>;
+    public createAIKnowledgeDocument(createAIKnowledgeDocument: CreateAIKnowledgeDocumentRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (createAIKnowledgeDocument === null || createAIKnowledgeDocument === undefined) {
             throw new Error('Required parameter createAIKnowledgeDocument was null or undefined when calling createAIKnowledgeDocument.');
         }
@@ -159,7 +159,7 @@ export class AIKnowledgeDocumentBffService {
         }
 
         let localVarPath = `/aIKnowledgeDocument`;
-        return this.httpClient.request<AIKnowledgeDocumentCreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateAIKnowledgeDocumentRequestResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: createAIKnowledgeDocument,
@@ -292,10 +292,10 @@ export class AIKnowledgeDocumentBffService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public searchAIKnowledgeDocuments(aIKnowledgeDocumentSearchRequest?: AIKnowledgeDocumentSearchRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AIKnowledgeDocumentSearchResponse>;
-    public searchAIKnowledgeDocuments(aIKnowledgeDocumentSearchRequest?: AIKnowledgeDocumentSearchRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AIKnowledgeDocumentSearchResponse>>;
-    public searchAIKnowledgeDocuments(aIKnowledgeDocumentSearchRequest?: AIKnowledgeDocumentSearchRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AIKnowledgeDocumentSearchResponse>>;
-    public searchAIKnowledgeDocuments(aIKnowledgeDocumentSearchRequest?: AIKnowledgeDocumentSearchRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public searchAIKnowledgeDocuments(aIKnowledgeDocumentSearchRequest?: SearchAIKnowledgeDocumentRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SearchAIKnowledgeDocumentResponse>;
+    public searchAIKnowledgeDocuments(aIKnowledgeDocumentSearchRequest?: SearchAIKnowledgeDocumentRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SearchAIKnowledgeDocumentResponse>>;
+    public searchAIKnowledgeDocuments(aIKnowledgeDocumentSearchRequest?: SearchAIKnowledgeDocumentRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SearchAIKnowledgeDocumentResponse>>;
+    public searchAIKnowledgeDocuments(aIKnowledgeDocumentSearchRequest?: SearchAIKnowledgeDocumentRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -338,7 +338,7 @@ export class AIKnowledgeDocumentBffService {
         }
 
         let localVarPath = `/aIKnowledgeDocument/search`;
-        return this.httpClient.request<AIKnowledgeDocumentSearchResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<SearchAIKnowledgeDocumentResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: aIKnowledgeDocumentSearchRequest,
@@ -358,10 +358,10 @@ export class AIKnowledgeDocumentBffService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateAIKnowledgeDocument(id: string, updateAIKnowledgeDocument: UpdateAIKnowledgeDocument, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AIKnowledgeDocumentUpdateResponse>;
-    public updateAIKnowledgeDocument(id: string, updateAIKnowledgeDocument: UpdateAIKnowledgeDocument, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AIKnowledgeDocumentUpdateResponse>>;
-    public updateAIKnowledgeDocument(id: string, updateAIKnowledgeDocument: UpdateAIKnowledgeDocument, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AIKnowledgeDocumentUpdateResponse>>;
-    public updateAIKnowledgeDocument(id: string, updateAIKnowledgeDocument: UpdateAIKnowledgeDocument, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateAIKnowledgeDocument(id: string, updateAIKnowledgeDocument: UpdateAIKnowledgeDocumentRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<UpdateAIKnowledgeDocumentResponse>;
+    public updateAIKnowledgeDocument(id: string, updateAIKnowledgeDocument: UpdateAIKnowledgeDocumentRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<UpdateAIKnowledgeDocumentResponse>>;
+    public updateAIKnowledgeDocument(id: string, updateAIKnowledgeDocument: UpdateAIKnowledgeDocumentRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<UpdateAIKnowledgeDocumentResponse>>;
+    public updateAIKnowledgeDocument(id: string, updateAIKnowledgeDocument: UpdateAIKnowledgeDocumentRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateAIKnowledgeDocument.');
         }
@@ -410,7 +410,7 @@ export class AIKnowledgeDocumentBffService {
         }
 
         let localVarPath = `/aIKnowledgeDocument/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<AIKnowledgeDocumentUpdateResponse>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<UpdateAIKnowledgeDocumentResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: updateAIKnowledgeDocument,

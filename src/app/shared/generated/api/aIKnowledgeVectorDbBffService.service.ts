@@ -17,11 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { AIKnowledgeVectorDbCreateResponse } from '../model/aIKnowledgeVectorDbCreateResponse';
+import { CreateAIKnowledgeVectorDbRequestResponse } from '../model/aIKnowledgeVectorDbCreateResponse';
 // @ts-ignore
-import { AIKnowledgeVectorDbUpdateResponse } from '../model/aIKnowledgeVectorDbUpdateResponse';
+import { UpdateAIKnowledgeVectorDbUpdateResponse } from '../model/aIKnowledgeVectorDbUpdateResponse';
 // @ts-ignore
-import { CreateAIKnowledgeVectorDb } from '../model/createAIKnowledgeVectorDb';
+import { CreateAIKnowledgeVectorDbRequest } from '../model/createAIKnowledgeVectorDb';
 // @ts-ignore
 import { GetAIKnowledgeVectorDbByIdResponse } from '../model/getAIKnowledgeVectorDbByIdResponse';
 // @ts-ignore
@@ -31,7 +31,7 @@ import { SearchAIKnowledgeVectorDbRequest } from '../model/searchAIKnowledgeVect
 // @ts-ignore
 import { SearchAIKnowledgeVectorDbResponse } from '../model/searchAIKnowledgeVectorDbResponse';
 // @ts-ignore
-import { UpdateAIKnowledgeVectorDb } from '../model/updateAIKnowledgeVectorDb';
+import { UpdateAIKnowledgeVectorDbUpdateRequest } from '../model/updateAIKnowledgeVectorDb';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -110,10 +110,10 @@ export class AIKnowledgeVectorDbBffService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAIKnowledgeVectorDb(createAIKnowledgeVectorDb: CreateAIKnowledgeVectorDb, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AIKnowledgeVectorDbCreateResponse>;
-    public createAIKnowledgeVectorDb(createAIKnowledgeVectorDb: CreateAIKnowledgeVectorDb, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AIKnowledgeVectorDbCreateResponse>>;
-    public createAIKnowledgeVectorDb(createAIKnowledgeVectorDb: CreateAIKnowledgeVectorDb, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AIKnowledgeVectorDbCreateResponse>>;
-    public createAIKnowledgeVectorDb(createAIKnowledgeVectorDb: CreateAIKnowledgeVectorDb, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createAIKnowledgeVectorDb(createAIKnowledgeVectorDb: CreateAIKnowledgeVectorDbRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CreateAIKnowledgeVectorDbRequestResponse>;
+    public createAIKnowledgeVectorDb(createAIKnowledgeVectorDb: CreateAIKnowledgeVectorDbRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CreateAIKnowledgeVectorDbRequestResponse>>;
+    public createAIKnowledgeVectorDb(createAIKnowledgeVectorDb: CreateAIKnowledgeVectorDbRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CreateAIKnowledgeVectorDbRequestResponse>>;
+    public createAIKnowledgeVectorDb(createAIKnowledgeVectorDb: CreateAIKnowledgeVectorDbRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (createAIKnowledgeVectorDb === null || createAIKnowledgeVectorDb === undefined) {
             throw new Error('Required parameter createAIKnowledgeVectorDb was null or undefined when calling createAIKnowledgeVectorDb.');
         }
@@ -159,7 +159,7 @@ export class AIKnowledgeVectorDbBffService {
         }
 
         let localVarPath = `/AIKnowledgeVectorDb`;
-        return this.httpClient.request<AIKnowledgeVectorDbCreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateAIKnowledgeVectorDbRequestResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: createAIKnowledgeVectorDb,
@@ -358,10 +358,10 @@ export class AIKnowledgeVectorDbBffService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateAIKnowledgeVectorDb(id: string, updateAIKnowledgeVectorDb: UpdateAIKnowledgeVectorDb, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<AIKnowledgeVectorDbUpdateResponse>;
-    public updateAIKnowledgeVectorDb(id: string, updateAIKnowledgeVectorDb: UpdateAIKnowledgeVectorDb, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<AIKnowledgeVectorDbUpdateResponse>>;
-    public updateAIKnowledgeVectorDb(id: string, updateAIKnowledgeVectorDb: UpdateAIKnowledgeVectorDb, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<AIKnowledgeVectorDbUpdateResponse>>;
-    public updateAIKnowledgeVectorDb(id: string, updateAIKnowledgeVectorDb: UpdateAIKnowledgeVectorDb, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateAIKnowledgeVectorDb(id: string, updateAIKnowledgeVectorDb: UpdateAIKnowledgeVectorDbUpdateRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<UpdateAIKnowledgeVectorDbUpdateResponse>;
+    public updateAIKnowledgeVectorDb(id: string, updateAIKnowledgeVectorDb: UpdateAIKnowledgeVectorDbUpdateRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<UpdateAIKnowledgeVectorDbUpdateResponse>>;
+    public updateAIKnowledgeVectorDb(id: string, updateAIKnowledgeVectorDb: UpdateAIKnowledgeVectorDbUpdateRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<UpdateAIKnowledgeVectorDbUpdateResponse>>;
+    public updateAIKnowledgeVectorDb(id: string, updateAIKnowledgeVectorDb: UpdateAIKnowledgeVectorDbUpdateRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateAIKnowledgeVectorDb.');
         }
@@ -410,7 +410,7 @@ export class AIKnowledgeVectorDbBffService {
         }
 
         let localVarPath = `/AIKnowledgeVectorDb/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<AIKnowledgeVectorDbUpdateResponse>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<UpdateAIKnowledgeVectorDbUpdateResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: updateAIKnowledgeVectorDb,

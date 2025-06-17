@@ -10,7 +10,7 @@
 import { AIKnowledgeDocument } from './aIKnowledgeDocument';
 
 
-export interface AIKnowledgeDocumentSearchResponse { 
+export interface SearchAIKnowledgeDocumentResponse { 
     results: Array<AIKnowledgeDocument>;
     /**
      * Total number of results on the server.

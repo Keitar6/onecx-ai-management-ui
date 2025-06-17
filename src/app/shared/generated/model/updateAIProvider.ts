@@ -10,7 +10,7 @@
 import { AIProvider } from './aIProvider';
 
 
-export interface UpdateAIProvider { 
+export interface UpdateAIProviderRequest { 
     dataObject?: AIProvider;
 }
 

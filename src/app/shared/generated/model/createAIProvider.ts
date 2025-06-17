@@ -10,7 +10,7 @@
 import { AIProvider } from './aIProvider';
 
 
-export interface CreateAIProvider { 
+export interface CreateAIProviderRequest { 
     dataObject?: AIProvider;
 }
 

@@ -18,7 +18,7 @@ import {
 import equal from 'fast-deep-equal'
 import { PrimeIcons } from 'primeng/api'
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs'
-import { AIProvider, CreateAIProvider, UpdateAIProvider } from 'src/app/shared/generated'
+import { AIProvider, CreateAIProviderRequest, UpdateAIProviderRequest } from 'src/app/shared/generated'
 import { selectUrl } from 'src/app/shared/selectors/router.selectors'
 
 import { AIProviderBffService } from 'src/app/shared/generated/api/aIProviderBffService.service'
@@ -126,7 +126,7 @@ export class AIProviderSearchEffects {
         const itemToEditId = dialogResult.result.id
         const itemToEdit = {
           dataObject: dialogResult.result
-        } as UpdateAIProvider
+        } as UpdateAIProviderRequest
         return this.AIProviderService.updateAIProvider(itemToEditId, itemToEdit).pipe(
           map(() => {
             this.messageService.success({
@@ -179,7 +179,7 @@ export class AIProviderSearchEffects {
         }
         const toCreateItem = {
           dataObject: dialogResult.result
-        } as CreateAIProvider
+        } as CreateAIProviderRequest
         return this.AIProviderService.createAIProvider(toCreateItem).pipe(
           map(() => {
             this.messageService.success({
@@ -216,7 +216,7 @@ export class AIProviderSearchEffects {
         const itemToEditId = result.id
         const itemToEdit = {
           dataObject: result
-        } as UpdateAIProvider
+        } as UpdateAIProviderRequest
         return this.AIProviderService.updateAIProvider(itemToEditId, itemToEdit).pipe(
           map(() => {
             this.messageService.success({

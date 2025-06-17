@@ -9,7 +9,7 @@
  */
 
 
-export interface AIProviderCreateResponse { 
+export interface CreateAIProviderResponse { 
     id?: string;
     name?: string;
     description?: string;

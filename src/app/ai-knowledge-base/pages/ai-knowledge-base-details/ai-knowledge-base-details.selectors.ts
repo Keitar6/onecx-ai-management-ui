@@ -14,7 +14,6 @@ function selectBackNavigationPossible(state: Record<string, any>): boolean {
 }
 
 export const AIKnowledgeBaseDetailsSelectors = createChildSelectors(AIKnowledgeBaseFeature.selectDetails, initialState)
-// export const aiKnowledadfadfgeBaseDetailsSelectors = createChildSelectors(selectBackNavigationPossible, initialState)
 
 export const selectAIKnowledgeBaseDetailsViewModel = createSelector(
   AIKnowledgeBaseDetailsSelectors.selectDetails,

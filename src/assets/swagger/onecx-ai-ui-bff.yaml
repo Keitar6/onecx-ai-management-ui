@@ -81,7 +81,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateAIKnowledgeVectorDb'
+              $ref: '#/components/schemas/UpdateAIKnowledgeVectorDbUpdateRequest'
       responses:
         '204':
           description: AIKnowledgeVectorDb updated
@@ -94,7 +94,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AIKnowledgeVectorDbUpdateResponse'
+                $ref: '#/components/schemas/UpdateAIKnowledgeVectorDbUpdateResponse'
         '400':
           description: Bad request
           content:
@@ -128,7 +128,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateAIKnowledgeVectorDb'
+              $ref: '#/components/schemas/CreateAIKnowledgeVectorDbRequest'
       responses:
         '201':
           description: New AIKnowledgeVectorDb created
@@ -141,7 +141,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AIKnowledgeVectorDbCreateResponse'
+                $ref: '#/components/schemas/CreateAIKnowledgeVectorDbRequestResponse'
         '400':
           description: Bad request
           content:
@@ -158,14 +158,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AIKnowledgeDocumentSearchRequest'
+              $ref: '#/components/schemas/SearchAIKnowledgeDocumentRequest'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AIKnowledgeDocumentSearchResponse'
+                $ref: '#/components/schemas/SearchAIKnowledgeDocumentResponse'
         '400':
           description: Bad request
         '500':
@@ -222,7 +222,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateAIKnowledgeDocument'
+              $ref: '#/components/schemas/UpdateAIKnowledgeDocumentRequest'
       responses:
         '204':
           description: AIKnowledgeDocument updated
@@ -235,7 +235,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AIKnowledgeDocumentUpdateResponse'
+                $ref: '#/components/schemas/UpdateAIKnowledgeDocumentResponse'
         '400':
           description: Bad request
           content:
@@ -269,7 +269,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateAIKnowledgeDocument'
+              $ref: '#/components/schemas/CreateAIKnowledgeDocumentRequest'
       responses:
         '201':
           description: New AIKnowledgeDocument created
@@ -282,7 +282,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AIKnowledgeDocumentCreateResponse'
+                $ref: '#/components/schemas/CreateAIKnowledgeDocumentResponse'
         '400':
           description: Bad request
           content:
@@ -300,7 +300,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateAIProvider'
+              $ref: '#/components/schemas/CreateAIProviderRequest'
       responses:
         '201':
           description: New AIProvider created
@@ -313,7 +313,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AIProviderCreateResponse'
+                $ref: '#/components/schemas/CreateAIProviderResponse'
         '400':
           description: Bad request
           content:
@@ -394,7 +394,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateAIProvider'
+              $ref: '#/components/schemas/UpdateAIProviderRequest'
       responses:
         '204':
           description: AIProvider updated
@@ -407,7 +407,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AIProviderUpdateResponse'
+                $ref: '#/components/schemas/UpdateAIProviderResponse'
         '400':
           description: Bad request
           content:
@@ -803,7 +803,7 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/AIKnowledgeVectorDb'
-    CreateAIKnowledgeVectorDb:
+    CreateAIKnowledgeVectorDbRequest:
       type: object
       properties:
         name:
@@ -812,7 +812,7 @@ components:
           type: string
         appId:
           type: string
-    UpdateAIKnowledgeVectorDb:
+    UpdateAIKnowledgeVectorDbUpdateRequest:
       type: object
       properties:
         name:
@@ -824,7 +824,7 @@ components:
         aiContext:  
           type: object
           $ref: '#/components/schemas/AIContext'
-    AIKnowledgeVectorDbCreateResponse:
+    UpdateAIKnowledgeVectorDbUpdateResponse:
       type: object
       properties:
         name:
@@ -838,7 +838,7 @@ components:
         aiContext:
           type: object
           $ref: '#/components/schemas/AIContext'
-    AIKnowledgeVectorDbUpdateResponse:
+    CreateAIKnowledgeVectorDbRequestResponse:
       type: object
       properties:
         name:
@@ -873,7 +873,7 @@ components:
             - NEW
             - PROCESSING
             - EMBEDDED
-    AIKnowledgeDocumentSearchRequest:
+    SearchAIKnowledgeDocumentRequest:
       type: object
       properties:
         limit:
@@ -890,7 +890,7 @@ components:
             - NEW
             - PROCESSING
             - EMBEDDED
-    AIKnowledgeDocumentSearchResponse:
+    SearchAIKnowledgeDocumentResponse:
       type: object
       required:
         - results
@@ -911,7 +911,7 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/AIKnowledgeDocument'
-    CreateAIKnowledgeDocument:
+    CreateAIKnowledgeDocumentRequest:
       type: object
       required:
         - aIKnowledgeDocumentData
@@ -919,7 +919,7 @@ components:
         aIKnowledgeDocumentData:
           type: object
           $ref: '#/components/schemas/AIKnowledgeDocument'
-    UpdateAIKnowledgeDocument:
+    UpdateAIKnowledgeDocumentRequest:
       type: object
       required:
         - aIKnowledgeDocumentData
@@ -927,7 +927,7 @@ components:
         aIKnowledgeDocumentData:
           type: object
           $ref: '#/components/schemas/AIKnowledgeDocument'
-    AIKnowledgeDocumentCreateResponse:
+    CreateAIKnowledgeDocumentResponse:
       type: object
       required:
         - name
@@ -945,7 +945,7 @@ components:
             - NEW
             - PROCESSING
             - EMBEDDED
-    AIKnowledgeDocumentUpdateResponse:
+    UpdateAIKnowledgeDocumentResponse:
       type: object
       required:
         - name
@@ -1029,19 +1029,19 @@ components:
       properties:
         result:
           $ref: '#/components/schemas/AIProvider'
-    CreateAIProvider:
+    CreateAIProviderRequest:
       type: object
       properties:
         dataObject:
           type: object
           $ref: '#/components/schemas/AIProvider'
-    UpdateAIProvider:
+    UpdateAIProviderRequest:
       type: object
       properties:
         dataObject:
           type: object
           $ref: '#/components/schemas/AIProvider'
-    AIProviderCreateResponse:
+    CreateAIProviderResponse:
       type: object
       properties:
         id:
@@ -1060,7 +1060,7 @@ components:
           type: string
         apiKey:
           type: string
-    AIProviderUpdateResponse:
+    UpdateAIProviderResponse:
       type: object
       properties:
         id:

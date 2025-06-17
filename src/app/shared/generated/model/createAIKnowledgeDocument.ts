@@ -10,7 +10,7 @@
 import { AIKnowledgeDocument } from './aIKnowledgeDocument';
 
 
-export interface CreateAIKnowledgeDocument { 
+export interface CreateAIKnowledgeDocumentRequest { 
     aIKnowledgeDocumentData: AIKnowledgeDocument;
 }
 

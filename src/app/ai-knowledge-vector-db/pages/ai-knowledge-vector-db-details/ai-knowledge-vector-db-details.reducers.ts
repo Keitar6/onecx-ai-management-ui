@@ -29,56 +29,30 @@ export const AIKnowledgeVectorDbDetailsReducer = createReducer(
   initialState,
   on(
     AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsReceived,
-    (state: AIKnowledgeVectorDbDetailsState, { details }): AIKnowledgeVectorDbDetailsState => {
-      console.log('DATA RECEIVED - aiKnowledgeVectorDbDetailsReceived: ')
-      console.log('details: ', details)
-      console.log('future details: ', {
-        ...state,
-        details,
-        detailsLoadingIndicator: false,
-        detailsLoaded: true
-      })
-
-      return {
-        ...state,
-        details,
-        detailsLoadingIndicator: false,
-        detailsLoaded: true
-      }
-    }
+    (state: AIKnowledgeVectorDbDetailsState, { details }): AIKnowledgeVectorDbDetailsState => ({
+      ...state,
+      details,
+      detailsLoadingIndicator: false,
+      detailsLoaded: true
+    })
   ),
   on(
     AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbDetailsLoadingFailed,
-    (state: AIKnowledgeVectorDbDetailsState): AIKnowledgeVectorDbDetailsState => {
-      console.log('DATA RECEIVED - aiKnowledgeVectorDbDetailsLoadingFailed', state)
-
-      return {
-        ...state,
-        details: initialState.details,
-        detailsLoadingIndicator: false,
-        detailsLoaded: false
-      }
-    }
+    (state: AIKnowledgeVectorDbDetailsState): AIKnowledgeVectorDbDetailsState => ({
+      ...state,
+      details: initialState.details,
+      detailsLoadingIndicator: false,
+      detailsLoaded: false
+    })
   ),
   on(
     AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsReceived,
-    (state: AIKnowledgeVectorDbDetailsState, { contexts }): AIKnowledgeVectorDbDetailsState => {
-      console.log('DATA RECEIVED - aiKnowledgeVectorDbContextsReceived')
-      console.log('state: ', state)
-      console.log('future state: ', {
-        ...state,
-        contexts,
-        contextsLoadingIndicator: false,
-        contextsLoaded: true
-      })
-
-      return {
-        ...state,
-        contexts,
-        contextsLoadingIndicator: false,
-        contextsLoaded: true
-      }
-    }
+    (state: AIKnowledgeVectorDbDetailsState, { contexts }): AIKnowledgeVectorDbDetailsState => ({
+      ...state,
+      contexts,
+      contextsLoadingIndicator: false,
+      contextsLoaded: true
+    })
   ),
   on(
     AIKnowledgeVectorDbDetailsActions.aiKnowledgeVectorDbContextsLoadingFailed,
@@ -93,6 +67,41 @@ export const AIKnowledgeVectorDbDetailsReducer = createReducer(
     AIKnowledgeVectorDbDetailsActions.navigatedToDetailsPage,
     (): AIKnowledgeVectorDbDetailsState => ({
       ...initialState
+    })
+  ),
+
+  on(
+    AIKnowledgeVectorDbDetailsActions.editButtonClicked,
+    (state: AIKnowledgeVectorDbDetailsState): AIKnowledgeVectorDbDetailsState => ({
+      ...state,
+      editMode: true
+    })
+  ),
+  on(
+    AIKnowledgeVectorDbDetailsActions.saveButtonClicked,
+    (state: AIKnowledgeVectorDbDetailsState, { details }): AIKnowledgeVectorDbDetailsState => ({
+      ...state,
+      details,
+      editMode: false,
+      isSubmitting: true
+    })
+  ),
+  on(
+    AIKnowledgeVectorDbDetailsActions.cancelEditConfirmClicked,
+    AIKnowledgeVectorDbDetailsActions.cancelEditNotDirty,
+    AIKnowledgeVectorDbDetailsActions.updateAIKnowledgeVectorDbCancelled,
+    AIKnowledgeVectorDbDetailsActions.updateAIKnowledgeVectorDbSucceeded,
+    (state: AIKnowledgeVectorDbDetailsState): AIKnowledgeVectorDbDetailsState => ({
+      ...state,
+      editMode: false,
+      isSubmitting: false
+    })
+  ),
+  on(
+    AIKnowledgeVectorDbDetailsActions.updateAIKnowledgeVectorDbFailed,
+    (state: AIKnowledgeVectorDbDetailsState): AIKnowledgeVectorDbDetailsState => ({
+      ...state,
+      isSubmitting: false
     })
   )
 )

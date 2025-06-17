@@ -9,13 +9,13 @@
  */
 
 
-export interface AIKnowledgeDocumentCreateResponse { 
+export interface CreateAIKnowledgeDocumentRequestResponse { 
     id?: string;
     name: string;
     documentRefId: string;
-    status?: AIKnowledgeDocumentCreateResponseStatusEnum;
+    status?: CreateAIKnowledgeDocumentRequestResponseStatusEnum;
 }
-export enum AIKnowledgeDocumentCreateResponseStatusEnum {
+export enum CreateAIKnowledgeDocumentRequestResponseStatusEnum {
     New = 'NEW',
     Processing = 'PROCESSING',
     Embedded = 'EMBEDDED'
