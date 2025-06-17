@@ -25,6 +25,7 @@ export class AIKnowledgeVectorDbDetailsEffects {
 
   navigatedToDetailsPage$ = createEffect(() => {
     return this.actions$.pipe(
+      tap((action) => console.log('Action dispatched:', action)),
       ofType(routerNavigatedAction),
       filterForNavigatedTo(this.router, AIKnowledgeVectorDbDetailsComponent),
       concatLatestFrom(() => this.store.select(selectRouteParam('id'))),

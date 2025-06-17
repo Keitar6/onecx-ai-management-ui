@@ -17,48 +17,9 @@ import { AIContext } from 'src/app/shared/generated'
 })
 export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
   public formGroup: FormGroup
-  viewModel$: Observable<AIKnowledgeVectorDbDetailsViewModel> = this.store
-    .select(selectAIKnowledgeVectorDbDetailsViewModel)
-    .pipe(tap(console.log))
-
-  headerActions$: Observable<Action[]> = this.viewModel$.pipe(
-    map((vm) => {
-      const actions: Action[] = [
-        {
-          titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.BACK',
-          labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.BACK',
-          show: 'always',
-          icon: PrimeIcons.ARROW_LEFT,
-          actionCallback: () => {
-            window.history.back()
-          }
-        },
-        {
-          titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.EDIT',
-          labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.EDIT',
-          show: 'always',
-          icon: PrimeIcons.PENCIL,
-          actionCallback: () => {
-            this.edit(vm.details?.id ?? '')
-          }
-        },
-        {
-          titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.DELETE',
-          labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.DELETE',
-          icon: PrimeIcons.TRASH,
-          show: 'asOverflow',
-          btnClass: '',
-          actionCallback: () => {
-            this.delete(vm.details?.id ?? '')
-          }
-        }
-      ]
-      return actions
-    })
-  )
-  displayContexts$: Observable<{ label: string; value: AIContext }[]> = this.viewModel$.pipe(
-    map(({ contexts }) => this.getContextFormValue(contexts))
-  )
+  viewModel$: Observable<AIKnowledgeVectorDbDetailsViewModel>
+  headerActions$: Observable<Action[]>
+  displayContexts$: Observable<{ label: string; value: AIContext }[]>
 
   constructor(
     private store: Store,
@@ -71,6 +32,48 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
       vdbCollection: new FormControl('', [Validators.maxLength(255)]),
       aiContext: new FormControl({ label: '', value: {} })
     })
+
+    this.viewModel$ = this.store
+      .select(selectAIKnowledgeVectorDbDetailsViewModel)
+      .pipe(tap((value) => console.log('first: ', value)))
+    // .pipe(tap((value) => console.log('seconds: ', value)))
+
+    this.headerActions$ = this.viewModel$.pipe(
+      map((vm) => {
+        const actions: Action[] = [
+          {
+            titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.BACK',
+            labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.BACK',
+            show: 'always',
+            icon: PrimeIcons.ARROW_LEFT,
+            actionCallback: () => {
+              window.history.back()
+            }
+          },
+          {
+            titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.EDIT',
+            labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.EDIT',
+            show: 'always',
+            icon: PrimeIcons.PENCIL,
+            actionCallback: () => {
+              this.edit(vm.details?.id ?? '')
+            }
+          },
+          {
+            titleKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.DELETE',
+            labelKey: 'AI_KNOWLEDGE_VECTOR_DB_DETAILS.GENERAL.DELETE',
+            icon: PrimeIcons.TRASH,
+            show: 'asOverflow',
+            btnClass: '',
+            actionCallback: () => {
+              this.delete(vm.details?.id ?? '')
+            }
+          }
+        ]
+        return actions
+      })
+    )
+    this.displayContexts$ = this.viewModel$.pipe(map(({ contexts }) => this.getContextFormValue(contexts)))
   }
 
   ngOnInit(): void {
@@ -98,6 +101,8 @@ export class AIKnowledgeVectorDbDetailsComponent implements OnInit {
         routerLink: '/ai-knowledge-vector-db'
       }
     ])
+
+    this.store.select(selectAIKnowledgeVectorDbDetailsViewModel).pipe(tap((value) => console.log('second: ', value)))
   }
 
   getContextFormValue(contexts: AIContext[]) {

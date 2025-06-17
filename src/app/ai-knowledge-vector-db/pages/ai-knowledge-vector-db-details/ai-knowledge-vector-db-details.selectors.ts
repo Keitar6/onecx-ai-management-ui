@@ -20,11 +20,11 @@ export const AIKnowledgeVectorDbDetailsSelectors = createChildSelectors(
 export const selectAIKnowledgeVectorDbDetailsViewModel = createSelector(
   AIKnowledgeVectorDbDetailsSelectors.selectDetails,
   AIKnowledgeVectorDbDetailsSelectors.selectContexts,
-  selectBackNavigationPossible,
   AIKnowledgeVectorDbDetailsSelectors.selectDetailsLoaded,
   AIKnowledgeVectorDbDetailsSelectors.selectDetailsLoadingIndicator,
   AIKnowledgeVectorDbDetailsSelectors.selectContextsLoaded,
   AIKnowledgeVectorDbDetailsSelectors.selectContextsLoadingIndicator,
+  selectBackNavigationPossible,
   AIKnowledgeVectorDbDetailsSelectors.selectEditMode,
   AIKnowledgeVectorDbDetailsSelectors.selectIsSubmitting,
   (
