@@ -86,7 +86,7 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
       ],
       providers: [
         provideMockStore({
-          initialState: { aiKnowledgeBase: { details: initialState } }
+          initialState: { aiKnowledgeBase: { details: initialState, backNavigationPossible: true } }
         }),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute }
@@ -134,6 +134,7 @@ describe('AiKnowledgeBaseDetailsComponent', () => {
   it('should have 2 inline actions', async () => {
     const pageHeader = await aiKnowledgeBaseDetails.getHeader()
     const inlineActions = await pageHeader.getInlineActionButtons()
+
     expect(inlineActions.length).toBe(2)
 
     const backAction = await pageHeader.getInlineActionButtonByLabel('Back')

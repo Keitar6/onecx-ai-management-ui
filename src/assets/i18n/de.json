@@ -28,7 +28,12 @@
     },
     "UPDATE": {
       "SUCCESS": "Speichern erfolgreich",
-      "ERROR": "Speichern fehlgeschlagen"
+      "ERROR": "Speichern fehlgeschlagen",
+      "FORM": {
+        "SAVE": "Speichern",
+        "CANCEL": "Abbrechen"
+      },
+      "HEADER": "Update AiKnowledgeBase"
     },
     "DELETE": {
       "HEADER": "AiKnowledgeBase löschen",
@@ -274,7 +279,10 @@
       "DESCRIPTION": "Beschreibung",
       "VDB": "Vdb",
       "VDBCOLLECTION": "VdbCollection",
-      "AICONTEXT": "AI Context"
+      "AICONTEXT": {
+        "NAME":"AI Kontext",
+        "PLACEHOLDER": "Wählen Sie einen ai Kontext aus"
+      }
     }
   },
   "AI_KNOWLEDGE_VECTOR_DB_SEARCH": {
