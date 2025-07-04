@@ -1,5 +1,5 @@
 export default {
-  displayName: 'onecx-ai',
+  displayName: 'onecx-ai-management',
   preset: './jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: './reports/coverage/',
